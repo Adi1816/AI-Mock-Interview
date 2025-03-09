@@ -92,8 +92,8 @@ function AddNewInterview() {
 };
 
   return (
-    <div>
-        <div className='p-10 border border-pink-200 rounded-xl bg-[#fff4fe] hover:scale-105 hover:shadow-pink-100 hover:shadow-md cursor-pointer transition-all' onClick={()=>setOpenDialog(true)}>
+    <div className=''>
+        <div className='p-10 border border-pink-100 shadow-md rounded-xl bg-pink-50 hover:scale-105 hover:shadow-pink-100 hover:shadow-md cursor-pointer transition-all' onClick={()=>setOpenDialog(true)}>
             <h2 className='font-semibold text-lg text-center text-[#4B164C]'>+ Add New Interview</h2>
         </div>
 

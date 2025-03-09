@@ -14,7 +14,7 @@ function InterviewItemCard({interview}) {
         console.log('feedback clicked', interview?.mockId);
     }
   return (
-    <div className='border border-pink-200 shadow-sm rounded-lg p-3'>
+    <div className='border border-pink-100 shadow-md rounded-lg p-3'>
         <h2 className='font-bold text-pink-600 text-lg'>{interview?.jobPosition}</h2>
         <h2 className='font-bold text-gray-600 text-sm'>Years of Experience: {interview.jobExperience} years</h2>
         <h2 className='font-bold text-gray-400 text-xs'>Created At: {interview.createdAt}</h2>

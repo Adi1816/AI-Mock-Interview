@@ -28,6 +28,7 @@
     "react-dom": "^19.0.0",
     "react-hook-speech-to-text": "^0.8.0",
     "react-webcam": "^7.2.0",
+    "shadcn": "^2.4.0-canary.12",
     "sonner": "^2.0.1",
     "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
