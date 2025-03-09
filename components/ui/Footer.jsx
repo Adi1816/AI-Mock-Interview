@@ -33,9 +33,14 @@ const Footer = () => {
         </div>
   
         {/* Copyright Section */}
-        <div className="text-center text-xs mt-6 border-t border-gray-700 pt-4">
+        <div className="flex flex-col justify-center items-center">
+        <div className="text-center text-xs border-t border-gray-700 mt-6 p-4">
           © {new Date().getFullYear()} AI Mock Interview. All rights reserved.
         </div>
+        <div className="text-center text-xs border-gray-700">Made with ❤️ by <strong><a href="https://linktr.ee/Adi1816" target="blank">Aditya Srivastava</a></strong></div>
+
+        </div>
+        
       </footer>
     );
   };
