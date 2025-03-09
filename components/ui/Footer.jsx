@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-      <footer className="text-gray-900 mt-20">
+      <footer className="text-gray-900 mt-16 md:mt-32">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
           
           {/* Brand Name */}
@@ -10,11 +10,11 @@ const Footer = () => {
           </div>
    */}
           {/* Navigation Links */}
-          <div className="flex flex-wrap gap-6 text-sm">
+          <div className="flex flex-wrap gap-3 md:gap-6 text-sm">
             <a href="/about" className="hover:text-pink-800 transition">About</a>
             <a href="https://github.com/Adi1816/AI-Mock-Interview" target="blank" className="hover:text-pink-800 transition">Features</a>
             <a href="https://www.linkedin.com/in/aditya-srivastava-12476524a/" target="blank" className="hover:text-pink-800 transition">Contact</a>
-            <a href="/privacy" className="hover:text-pink-800 transition">Privacy Policy</a>
+            <a href="/privacy" className="hover:text-pink-800 transition">Privacy</a>
           </div>
   
           {/* Social Icons

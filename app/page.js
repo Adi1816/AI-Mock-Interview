@@ -23,13 +23,13 @@ export default function LandingPage() {
         width={50} 
         height={50} 
         alt='Logo' 
-        className="absolute top-2 left-2"
+        className="absolute top-2 left-2 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-[50px] lg:h-[50px]"
       />
     
       {/* Hero Section */}
       <div className="text-center max-w-3xl">
-        <h1 className="text-5xl font-bold leading-tight">Crack Your Dream Job with AI-Powered Mock Interviews</h1>
-        <p className="mt-4 text-lg text-gray-900">
+        <h1 className="text-3xl md:text-5xl font-bold leading-tight">Crack Your Dream Job with AI-Powered Mock Interviews</h1>
+        <p className="mt-4 text-md md:text-lg text-gray-900">
           Experience real-time AI-driven interviews tailored to your skill level and job aspirations.
         </p>
         <div className="mt-6 flex justify-center gap-4">
