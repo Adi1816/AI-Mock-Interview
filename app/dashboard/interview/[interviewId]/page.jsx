@@ -69,10 +69,14 @@ function Interview({params}) {
 
             
         </div>
-        <div className='mt-4 flex justify-end items-end'>
+        <div className='mt-4 flex justify-end items-end gap-4'>
+        <Link href={'/dashboard/'}>
+            <Button className='font-bold'>Back to Dashboard</Button>
+            </Link>
             <Link href={'/dashboard/interview/'+params.interviewId+'/start'}>
             <Button className='font-bold'>Start Interview</Button>
             </Link>
+            
             
         </div>
     </div>

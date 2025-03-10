@@ -30,7 +30,7 @@ function InterviewList() {
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-3'>
             {interviewList?.length==0 ? 
             <>
-            <h1 className='font-bold text-2xl text-gray-500'>No Previous Interview Data Found.</h1>
+            <h1 className='font-bold text-5xl text-gray-500 glow-text-2'>No Previous Interview Data Found.</h1>
             </>
             :
             <>

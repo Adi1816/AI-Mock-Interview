@@ -87,6 +87,9 @@ function RecordAnsSection({mockInterviewQues, activeQuestionIndex, interviewData
             setUserAnswer('');
             setResults([]);
         }
+        else{
+            toast('Please Record once again');
+        }
         setResults([]);
         setLoading(false);
 

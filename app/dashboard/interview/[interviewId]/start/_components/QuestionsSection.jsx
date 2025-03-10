@@ -34,8 +34,8 @@ function QuestionsSection({mockInterviewQues, activeQuestionIndex}) {
                 <Lightbulb/>
                 <strong>READ: </strong>
             </h2>
-            <h2 className='mt-3 text-yellow-600 text-xs md:text-sm'>It is recommended to enable video webcam and microphone to start your AI generated mock interview. It has 10 questions which you can answer and at last you will get the report on the basis of your answer.
-                <h1><strong>NOTE:</strong> We never record your video or save any private stuff. You can disable the access of webcam anytime, if you want. Give a buffer time of 2 seconds before and after clicking on the Record Box.</h1>
+            <h2 className='mt-3 text-yellow-600 text-xs md:text-sm'>It is recommended to enable video webcam and microphone to start your AI generated mock interview. It has 10 questions which you can answer and at last you will get the report on the basis of your answer.</h2>
+                <h2 className='mt-3 text-yellow-600 text-xs md:text-sm'><strong>NOTE:</strong> We never record your video or save any private stuff. You can disable the access of webcam anytime, if you want. <strong>Give a buffer time of 2 seconds before and after clicking on the Record Box.</strong>
             </h2>
         </div>
 

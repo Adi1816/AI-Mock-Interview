@@ -34,8 +34,22 @@ function Feedback({ params }) {
 
     // Calculate Overall Rating (out of 5)
     const overallRating = feedbackList.length > 0
-        ? (feedbackList.reduce((sum, item) => sum + Math.min(5, item.rating), 0) / feedbackList.length).toFixed(1)
-        : null;
+    ? (feedbackList.reduce((sum, item) => {
+        let rating = item.rating.toString().includes("/") 
+            ? parseInt(item.rating.split("/")[0])  
+            : parseInt(item.rating);  
+        return sum + (isNaN(rating) ? 0 : Math.min(5, rating));
+    }, 0) / feedbackList.length).toFixed(1)
+    : null;
+
+    const parseRating = (rating) => {
+      if (!rating) return 0; // Handle null/undefined cases
+      let num = rating.toString().includes("/") 
+          ? parseInt(rating.split("/")[0])  
+          : parseInt(rating);
+      return isNaN(num) ? 0 : num; // Handle NaN cases
+  };
+  
 
     return (
         <div className='p-10'>
@@ -64,10 +78,11 @@ function Feedback({ params }) {
                             </CollapsibleTrigger>
                             <CollapsibleContent>
                                 <div className='flex flex-col gap-2'>
-                                    <h2 className={`p-2 border rounded-lg shadow-md ${item.rating > 2 ? 'text-green-600 bg-green-100 border-green-200' : 'text-red-600 bg-red-100 border-red-200'}`}>
-                                        <strong className={item.rating > 2 ? 'text-green-700' : 'text-red-700'}>Rating: </strong>
-                                        {Math.min(5, item.rating)}
-                                    </h2>
+                                <h2 className={`p-2 border rounded-lg shadow-md ${parseRating(item.rating) > 2 ? 
+                                    'text-green-600 bg-green-100 border-green-200' : 'text-red-600 bg-red-100 border-red-200'}`}>
+                                    <strong className={parseRating(item.rating) > 2 ? 'text-green-700' : 'text-red-700'}>Rating: </strong>
+                                    {Math.min(5, parseRating(item.rating))}
+                                </h2>
                                     <h2 className='text-pink-600 shadow-md  bg-pink-100 border-pink-200 p-2 border rounded-lg'>
                                         <strong>Your Answer: </strong>{item.userAnswer}
                                     </h2>
