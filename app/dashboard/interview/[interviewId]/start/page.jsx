@@ -24,10 +24,10 @@ function StartInterview({params}) {
         console.log("mockInterviewQues after fetching:", mockInterviewQues);
     }, []);
 
-    const getInterviewDetails = async ()=>{
+    const getInterviewDetails = async () => {
         try {
-            const result=await db.select().from(MockInterview)
-            .where(eq(MockInterview.mockId, params.interviewId));
+            const result = await db.select().from(MockInterview)
+                .where(eq(MockInterview.mockId, params.interviewId));
     
             if (!result || result.length === 0) {
                 console.error("❌ No interview data found");
@@ -39,17 +39,21 @@ function StartInterview({params}) {
             const jsonMockResp = JSON.parse(result[0].jsonMockResp || "{}");
             console.log("🛠 Parsed JSON Response:", jsonMockResp);
             console.log("🛠 Type of jsonMockResp:", typeof jsonMockResp);
-
-
-            const extractedQuestions = jsonMockResp.interview_questions; 
-            console.log("✅ Extracted Questions:", extractedQuestions); 
-            setMockInterviewQues(Array.isArray(extractedQuestions) ? extractedQuestions : []);
     
+            // 🔥 Dynamically detect the key
+            const key = jsonMockResp.interview_questions ? "interview_questions" : "interviewQuestions";
+            console.log(`🔍 Using Key: ${key}`);
+    
+            const extractedQuestions = jsonMockResp[key] || []; 
+            console.log("✅ Extracted Questions:", extractedQuestions);
+    
+            setMockInterviewQues(Array.isArray(extractedQuestions) ? extractedQuestions : []);
             setInterviewData(result[0]);
         } catch (error) {
             console.error("❌ Error fetching interview details:", error);
         }
-    }
+    };
+    
   return (
     <div> 
         <div className='grid grid-cols-1 md:grid-cols-2 gap-10'>

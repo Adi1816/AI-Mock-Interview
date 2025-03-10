@@ -25,14 +25,79 @@ function RecordAnsSection({mockInterviewQues, activeQuestionIndex, interviewData
         setResults
       } = useSpeechToText({
         continuous: true,
-        useLegacyResults: false
+        useLegacyResults: true
       });
 
+      console.log("🔥 Hook Initialized:", isRecording);
+
+      useEffect(() => {
+        if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
+            console.error("❌ Speech Recognition API not supported in this browser");
+            return;
+        }
+    
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+    
+        recognition.onresult = (event) => {
+            console.log("🎙 Speech Result:", event.results[0][0].transcript);
+        };
+    
+        recognition.onerror = (event) => {
+            console.error("❌ Speech Recognition Error:", event.error);
+        };
+    
+        recognition.start();
+        console.log("✅ Speech Recognition Started");
+    
+        return () => {
+            recognition.stop();
+            console.log("⛔ Speech Recognition Stopped");
+        };
+    }, []);
+
+      navigator.mediaDevices.getUserMedia({ audio: true })
+  .then(() => console.log("🎙️ Mic Permission Granted"))
+  .catch(err => console.error("❌ Mic Permission Denied:", err));
+
+
+      useEffect(() => {
+        if (error) {
+            console.log("🚨 Speech Recognition Error:", error);
+        }
+    }, [error]);
+
+    useEffect(() => {
+        console.log("🛠 useEffect triggered for error:", error);
+        if (error) {
+            console.log("🚨 Speech Recognition Error:", error);
+        }
+    }, [error]);
+    
+
       useEffect(()=>{
-        results.map((result)=>{
-            setUserAnswer(prevAns=>prevAns+result?.transcript)
-        })
-      }, [results])
+        console.log("🎤 isRecording:", isRecording);
+    }, [isRecording]);
+    
+
+      useEffect(()=>{
+        console.log("Speech Results:", results);
+    }, [results]);
+    
+
+      useEffect(() => {
+        if (results.length > 0) {
+            setUserAnswer(prevAns => prevAns + " " + results.map(r => r.transcript).join(" "));
+        }
+    }, [results]);
+    
+
+    //   useEffect(()=>{
+    //     results.map((result)=>{
+    //         setUserAnswer(prevAns=>prevAns+result?.transcript)
+    //     })
+    //   }, [results])
 
       useEffect(()=>{
         if(!isRecording && userAnswer.length>10){
