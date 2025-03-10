@@ -93,51 +93,54 @@ function AddNewInterview() {
 
   return (
     <div className=''>
-        <div className='p-10 border border-pink-100 shadow-md rounded-xl bg-pink-50 hover:scale-105 hover:shadow-pink-100 hover:shadow-md cursor-pointer transition-all' onClick={()=>setOpenDialog(true)}>
-            <h2 className='font-semibold text-lg text-center text-[#4B164C]'>+ Add New Interview</h2>
+        <div className='p-10 border border-pink-100 shadow-md rounded-xl bg-pink-50 hover:scale-105 hover:shadow-pink-300 hover:shadow-md  cursor-pointer transition-all' onClick={()=>setOpenDialog(true)}>
+            <h2 className='font-semibold text-xl text-center text-[#4B164C] glow-text-2 '>+ Add New Interview</h2>
         </div>
 
-        <Dialog open={openDialog}>
-        <DialogContent className='max-w-2xl'>
+        <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+    <DialogContent className='max-w-2xl'>
         <DialogHeader>
-        <DialogTitle className='font-bold text-2xl'>Tell us more about the Job you want to get Interviewed.</DialogTitle>
-        <DialogDescription>
-            <form onSubmit={onSubmit}>
-            <div>
-                <h2>Add Details of your Dream Job.</h2>
-                <div>
-                    <label className='block text-sm font-semibold text-[#4B164C] pt-4 '>Job Title:</label>
-                    <Input placeholder="Ex: Full Stack Developer" required
-                    onChange={(event)=>setJobTitle(event.target.value)}/>
-                </div>
-                <div>
-                    <label className='block text-sm font-semibold text-[#4B164C] pt-4 '>Job Description:</label>
-                    <Textarea placeholder="Ex: SDE Role, Frontend Dev Role etc." required
-                    onChange={(event)=>setJobDescription(event.target.value)}/>
-                </div>
-                <div>
-                    <label className='block text-sm font-semibold text-[#4B164C] pt-4 '>Tech Stacks:</label>
-                    <Input placeholder="Ex: React, Angular, JavaScript, NodeJs" required
-                    onChange={(event)=>setTechStacks(event.target.value)}/>
-                </div>
-                <div>
-                    <label className='block text-sm font-semibold text-[#4B164C] pt-4 '>Years of Experience:</label>
-                    <Input placeholder="Ex: 0, 1, 12" type="number" max="50" required
-                    onChange={(event)=>setDuration(event.target.value)}/>
-                </div>
-            </div>
-            
-            <div className='flex gap-6 pt-3 justify-end'>
-                <Button type="button" variant="ghost" onClick={()=>setOpenDialog(false)} className='font-bold'>Cancel</Button>
-                <Button type="submit" disabled={loading} className='font-bold'>
-                    {loading?<><LoaderCircle className='animate-spin'/>Generating from AI</>:<>Start Interview</>}
-                </Button>
-            </div>
-            </form>
-        </DialogDescription>
+            <DialogTitle className='font-bold text-2xl'>
+                Tell us more about the Job you want to get Interviewed.
+            </DialogTitle>
+            <DialogDescription>
+                <form onSubmit={onSubmit}>
+                    <div>
+                        <h2>Add Details of your Dream Job.</h2>
+                        <div>
+                            <label className='block text-sm font-semibold text-[#4B164C] pt-4 '>Job Title:</label>
+                            <Input placeholder="Ex: Full Stack Developer" required
+                            onChange={(event)=>setJobTitle(event.target.value)}/>
+                        </div>
+                        <div>
+                            <label className='block text-sm font-semibold text-[#4B164C] pt-4 '>Job Description:</label>
+                            <Textarea placeholder="Ex: SDE Role, Frontend Dev Role etc." required
+                            onChange={(event)=>setJobDescription(event.target.value)}/>
+                        </div>
+                        <div>
+                            <label className='block text-sm font-semibold text-[#4B164C] pt-4 '>Tech Stacks:</label>
+                            <Input placeholder="Ex: React, Angular, JavaScript, NodeJs" required
+                            onChange={(event)=>setTechStacks(event.target.value)}/>
+                        </div>
+                        <div>
+                            <label className='block text-sm font-semibold text-[#4B164C] pt-4 '>Years of Experience:</label>
+                            <Input placeholder="Ex: 0, 1, 12" type="number" max="50" required
+                            onChange={(event)=>setDuration(event.target.value)}/>
+                        </div>
+                    </div>
+                    
+                    <div className='flex gap-6 pt-3 justify-end'>
+                        <Button type="button" variant="ghost" onClick={()=>setOpenDialog(false)} className='font-bold'>Cancel</Button>
+                        <Button type="submit" disabled={loading} className='font-bold'>
+                            {loading ? <><LoaderCircle className='animate-spin'/>Generating from AI</> : <>Start Interview</>}
+                        </Button>
+                    </div>
+                </form>
+            </DialogDescription>
         </DialogHeader>
-        </DialogContent>
-        </Dialog>
+    </DialogContent>
+</Dialog>
+
     </div>
   )
 }

@@ -54,7 +54,7 @@ function RecordAnsSection({mockInterviewQues, activeQuestionIndex, interviewData
         setLoading(true);
         const feedbackPrompt="Question: "+mockInterviewQues[activeQuestionIndex]?.ques+
         ", User Answer: "+userAnswer+
-        ", Depends on question and user answer for given interview question"+
+        ", Depending on question and user answer for given interview question"+
         " Please give us rating for answer and feedback as area of improvement if any."+
         "In Just 3 to 5 lines to improve it in JSON format with rating field and feedback field."+
         "Strictly follow these JSON rules:1. **Do not include any markdown formatting** (like \`\`\`json or \`\`\`).2. Ensure that all answers are **single-line or properly escaped**.3. Do **not** use line breaks (\\n) or extra spaces inside the JSON values."
@@ -96,7 +96,7 @@ function RecordAnsSection({mockInterviewQues, activeQuestionIndex, interviewData
 
   return (
     <div className='flex flex-col items-center justify-center'>
-        <div className='flex flex-col justify-center items-center bg-pink-50 rounded-lg p-5 mt-20'>
+        <div className='flex flex-col justify-center items-center bg-pink-50 rounded-lg p-5 mt-20 shadow-lg'>
             <Image src={'/webcam.png'} width={200} height={200} className='absolute' alt="webcam image"/>
             <Webcam
             mirrored={true}

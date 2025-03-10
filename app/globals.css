@@ -4,8 +4,12 @@
 
 body {
   font-family: Gilroy;
-  background-image: url('https://img.freepik.com/free-vector/watercolor-background_87374-57.jpg?t=st=1741549948~exp=1741553548~hmac=69b281a9c1366e521958d0caf2bab5bced8249845cbd41b53ced55d79aa3ae22&w=2000');
+  background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), 
+              url('https://img.freepik.com/free-vector/watercolor-background_87374-57.jpg?t=st=1741549948~exp=1741553548~hmac=69b281a9c1366e521958d0caf2bab5bced8249845cbd41b53ced55d79aa3ae22&w=2000');
+  background-size: cover;
+  background-position: center;
 }
+
 
 
 @layer base {
@@ -123,3 +127,26 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.glow-text {
+  color: #00a808; /* Light Green */
+  text-shadow: 
+    -2px -2px 0 rgb(211, 255, 172),  
+    2px -2px 0 rgb(206, 255, 146),  
+    -2px 2px 0 rgb(167, 255, 153),  
+    2px 2px 0 rgb(199, 255, 181),
+    0px 0px 10px #00ff99,
+    0px 0px 20px #90e76e;
+}
+
+.glow-text-2 {
+  color: #ff308a; /* Light Green */
+  text-shadow: 
+    -2px -2px 0 #fff0f7,  
+    2px -2px 0 rgb(255, 223, 251),  
+    -2px 2px 0 rgb(255, 225, 249),  
+    2px 2px 0 rgb(255, 224, 249),
+    0px 0px 10px #ffafef,
+    0px 0px 20px #ffabf5;
+}
+

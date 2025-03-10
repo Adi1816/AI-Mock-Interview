@@ -17,9 +17,13 @@ function Header() {
     <div className='flex p-2 items-center justify-between bg-transparent'>
         <Image src='/logo.svg' width={50} height={50} alt='Logo'></Image>
         <ul className='hidden md:flex gap-10'>
-            <li className={`hover:text-primary hover:font-bold transition-all cursor-pointer 
-            ${path==='/dashboard' && 'text-primary font-bold'}
-            `} >Dashboard</li>
+        <li 
+                    className={`hover:text-primary hover:font-bold transition-all cursor-pointer 
+                    ${path === '/' && 'text-primary font-bold'}`} 
+                    onClick={() => router.push('/dashboard')} // Home pe click par "/" route
+                >
+                    Dashboard
+                </li>
             <li className={`hover:text-primary hover:font-bold transition-all cursor-pointer 
             ${path==='/dashboard/questions' && 'text-primary font-bold'}
             `} >Questions</li>

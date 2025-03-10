@@ -32,7 +32,7 @@ function StartInterview({params}) {
         console.log("Type of jsonMockResp:", typeof jsonMockResp);
         console.log("jsonMockResp.interviewQuestions:", jsonMockResp.interviewQuestions);
 
-        setMockInterviewQues(Array.isArray(jsonMockResp.interviewQuestions) ? jsonMockResp.interviewQuestions : []);
+        setMockInterviewQues(Array.isArray(jsonMockResp.interview_questions) ? jsonMockResp.interview_questions : []);
         setInterviewData(result[0]);
     }
   return (
@@ -54,7 +54,7 @@ function StartInterview({params}) {
             <Button onClick={()=>setActiveQuestionIndex(activeQuestionIndex+1)} className='font-bold'>Next Question</Button>}
             {activeQuestionIndex==mockInterviewQues?.length-1 && 
             <Link href={'/dashboard/interview/' + interviewData?.mockId + '/feedback'} >
-            <Button className='bg-red-500 text-white font-bold'>End Interview</Button>
+            <Button className='bg-red-500 text-white font-bold hover:bg-white hover:text-red-500'>End Interview</Button>
             </Link>}
         </div>
     </div>
