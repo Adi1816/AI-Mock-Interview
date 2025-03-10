@@ -94,7 +94,7 @@ function AddNewInterview() {
   return (
     <div className=''>
         <div className='p-10 border border-pink-100 shadow-md rounded-xl bg-pink-50 hover:scale-105 hover:shadow-pink-300 hover:shadow-md  cursor-pointer transition-all' onClick={()=>setOpenDialog(true)}>
-            <h2 className='font-semibold text-xl text-center text-[#4B164C] glow-text-2 '>+ Add New Interview</h2>
+            <h2 className='font-semibold text-xl text-center text-[#4B164C]'>+ Add New Interview</h2>
         </div>
 
         <Dialog open={openDialog} onOpenChange={setOpenDialog}>
