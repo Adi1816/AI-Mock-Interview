@@ -14,6 +14,7 @@ function StartInterview({params}) {
     const [interviewData, setInterviewData]=useState();
     const [mockInterviewQues, setMockInterviewQues]=useState([]);
     const [activeQuestionIndex, setActiveQuestionIndex]=useState(0);
+
     useEffect(() => {
         console.log("🔄 Updated mockInterviewQues:", mockInterviewQues);
     }, [mockInterviewQues]); 
@@ -35,12 +36,15 @@ function StartInterview({params}) {
     
             console.log("✅ Raw DB Result:", result);
     
-            const jsonMockResp = JSON.parse(result[0].jsonMockResp);
-            console.log("✅ Parsed JSON Response:", jsonMockResp);
+            const jsonMockResp = JSON.parse(result[0].jsonMockResp || "{}");
+            console.log("🛠 Parsed JSON Response:", jsonMockResp);
+            console.log("🛠 Type of jsonMockResp:", typeof jsonMockResp);
+
+
+            const extractedQuestions = jsonMockResp.interview_questions; 
+            console.log("✅ Extracted Questions:", extractedQuestions); 
+            setMockInterviewQues(Array.isArray(extractedQuestions) ? extractedQuestions : []);
     
-            console.log("✅ Extracted Questions:", jsonMockResp.interviewQuestions);
-    
-            setMockInterviewQues(Array.isArray(jsonMockResp.interviewQuestions) ? jsonMockResp.interviewQuestions : []);
             setInterviewData(result[0]);
         } catch (error) {
             console.error("❌ Error fetching interview details:", error);
