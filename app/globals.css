@@ -10,6 +10,16 @@ body {
   background-position: center;
 }
 
+body {
+  overflow: auto;  /* Scrolling allow rahega */
+  scrollbar-width: none; /* Firefox ke liye scrollbar hata dega */
+}
+
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Edge, Safari ke liye scrollbar hata dega */
+}
+
+
 
 
 @layer base {
@@ -63,7 +73,7 @@ body {
 
     --chart-5: 27 87% 67%;
 
-    --radius: 0.5rem
+    --radius: 0.5rem;
   }
   .dark {
 
@@ -149,4 +159,6 @@ body {
     0px 0px 10px #ffafef,
     0px 0px 20px #ffabf5;
 }
+
+
 

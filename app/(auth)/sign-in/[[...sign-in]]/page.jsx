@@ -6,8 +6,8 @@ export default function Page() {
   <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
     <section className="relative flex h-32 items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6">
       <img
-        alt=""
-        src="https://files.oaiusercontent.com/file-VgFJp88HNi661M3xFpBKQH?se=2025-03-10T10%3A26%3A40Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3Daa256388-0bde-4292-98ad-8d3973257784.webp&sig=sug29BSDXgTHUOQPla5DFiLre7cjCaZ6Q47L%2BGO6z9U%3D"
+        alt="SIGN_IN_BUDDY"
+        src="/authImg.png"
         className="absolute inset-0 h-full w-full object-cover opacity-70"
       />
 
