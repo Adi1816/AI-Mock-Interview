@@ -4,21 +4,11 @@
 
 body {
   font-family: Gilroy;
-  background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), 
+  /* background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), 
               url('https://img.freepik.com/free-vector/watercolor-background_87374-57.jpg?t=st=1741549948~exp=1741553548~hmac=69b281a9c1366e521958d0caf2bab5bced8249845cbd41b53ced55d79aa3ae22&w=2000');
-  background-size: cover;
+  background-size: cover; */
   background-position: center;
 }
-
-body {
-  overflow: auto;  /* Scrolling allow rahega */
-  scrollbar-width: none; /* Firefox ke liye scrollbar hata dega */
-}
-
-body::-webkit-scrollbar {
-  display: none; /* Chrome, Edge, Safari ke liye scrollbar hata dega */
-}
-
 
 
 
@@ -161,4 +151,93 @@ body::-webkit-scrollbar {
 }
 
 
+/* ---------------------------------------------------------------- */
 
+/* Add these custom animations to your globals.css */
+
+@keyframes background-shine {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.2); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes gradient-text {
+  0% { background-position: -100% 0; }
+  100% { background-position: 100% 0; }
+}
+
+@keyframes soft-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes border-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-background-shine {
+  animation: background-shine 10s linear infinite;
+}
+
+.animate-gradient-text {
+  background-size: 200% auto;
+  background-position: -100% 0;
+  animation: gradient-text 2s infinite alternate;
+}
+
+.animate-soft-pulse {
+  animation: soft-pulse 2s ease-in-out infinite;
+}
+
+.border-gradient-animated {
+  background: linear-gradient(45deg, #00c6ff, #0072ff, #00c6ff);
+  background-size: 200% 200%;
+  animation: border-gradient 2s ease infinite;
+}
+
+/* Scrollbar Hiding Styles */
+body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Optional: Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  overflow-y: auto;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  position: relative;
+  width: 100vw;
+}
+
+#__next {
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+}
