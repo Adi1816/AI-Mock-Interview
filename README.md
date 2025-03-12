@@ -1,4 +1,3 @@
-```markdown
 # 🚀 AI Mock Interview Platform
 
 ## 🌟 Project Overview
@@ -70,7 +69,6 @@ An cutting-edge AI-powered mock interview platform designed to revolutionize int
 1. Clone the repository
 ```bash
 git clone https://github.com/your-username/ai-mock-interview.git
-```
 
 2. Install dependencies
 ```bash
