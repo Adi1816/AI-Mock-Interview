@@ -122,7 +122,7 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/components/ui/collapsible"
-import { ChevronsUpDown, ArrowLeft, Star } from 'lucide-react'
+import { ChevronsUpDown, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 
@@ -165,15 +165,30 @@ function Feedback({ params }) {
     const RatingBar = ({ rating }) => {
         const normalizedRating = Math.min(5, parseFloat(rating)); 
         const ratingPercentage = normalizedRating > 0 ? (normalizedRating / 5) * 100 : 0;
-    
+
+        // Determine color gradient based on rating
+        const getColorGradient = () => {
+            if (normalizedRating <= 1) {
+                return 'from-red-600 to-red-400'; // Very low rating - deep red
+            } else if (normalizedRating <= 2) {
+                return 'from-red-600 via-orange-500 to-orange-400'; // Low rating - red to orange
+            } else if (normalizedRating <= 3) {
+                return 'from-orange-500 via-yellow-500 to-yellow-400'; // Medium rating - orange to yellow
+            } else if (normalizedRating <= 4) {
+                return 'from-yellow-500 via-green-500 to-green-400'; // Good rating - yellow to green
+            } else {
+                return 'from-green-600 to-green-400'; // Excellent rating - full green
+            }
+        };
+
         return (
             <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
                 <div 
                     className={`h-2.5 rounded-full transition-all duration-300 
-                        ${normalizedRating === 0 
-                            ? 'bg-gray-300 dark:bg-gray-600' 
-                            : 'bg-gradient-to-r from-green-500 to-blue-500'}`}
-                    style={{ width: `${ratingPercentage}%` }}
+                        bg-gradient-to-r ${getColorGradient()}`}
+                    style={{ 
+                        width: `${ratingPercentage}%`,
+                    }}
                 ></div>
             </div>
         );
@@ -207,18 +222,14 @@ function Feedback({ params }) {
                             <div className=" bg-purple-500/10 border-purple-500/20 blue-500/30 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
                                 <div className="flex items-center space-x-4">
                                     <h2 className="text-xl font-semibold text-gray-300">
-                                        Overall Interview Rating:
+                                        Overall Rating:
                                     </h2>
-                                    <span className="text-lg font-bold 
+                                    <span className="text-3xl font-bold 
                                             bg-clip-text text-transparent 
                                             bg-gradient-to-r from-cyan-300 to-blue-500">
                                             {parseRating(overallRating)}/5
                                         </span>
                                     <RatingBar rating={parseFloat(overallRating)} />
-                                    <div className="flex items-center space-x-2">
-                                        {/* {renderStars(parseFloat(overallRating))} */}
-                                        
-                                    </div>
                                 </div>
                                 <p className="text-gray-400 mt-2">
                                     Detailed AI Analysis of your Interview
@@ -253,7 +264,6 @@ function Feedback({ params }) {
                                                             {parseRating(item.rating)}/5
                                                         </span>
                                                         <RatingBar rating={item.rating} />
-                                                        
                                                     </div>
                                                 </div>
 

@@ -142,52 +142,63 @@ function StartInterview({params}) {
 
     return (
         <div className="fixed inset-0 bg-gradient-to-br from-slate-700 via-black to-slate-800 text-white overflow-hidden">
-            <div className="container mx-auto px-6 py-10 h-full overflow-auto mt-12">
-                <div className='grid grid-cols-1 md:grid-cols-2 gap-12 h-[calc(100%-150px)]'>
-                    <QuestionsSection 
-                        mockInterviewQues={mockInterviewQues}
-                        activeQuestionIndex={activeQuestionIndex}
-                    />
-                    <RecordAnsSection
-                        mockInterviewQues={mockInterviewQues}
-                        activeQuestionIndex={activeQuestionIndex}
-                        interviewData={interviewData}
-                    />
-                </div>
-                
-                <div className='mt-10 flex justify-end space-x-4'>
-                    {activeQuestionIndex > 0 && (
-                        <Button 
-                            onClick={() => setActiveQuestionIndex(activeQuestionIndex - 1)}
-                            className='bg-transparent border-white/20 text-white hover:bg-white/10 flex items-center space-x-2'
-                        >
-                            <ArrowLeft size={16} />
-                            <span>Previous Question</span>
-                        </Button>
-                    )}
-                    
-                    {activeQuestionIndex < mockInterviewQues?.length - 1 && (
-                        <Button 
-                            onClick={() => setActiveQuestionIndex(activeQuestionIndex + 1)}
-                            className='bg-gradient-to-r from-cyan-500 to-blue-500 
-                            hover:from-cyan-600 hover:to-blue-600 
-                            flex items-center space-x-2'
-                        >
-                            <span>Next Question</span>
-                            <ArrowRight size={16} />
-                        </Button>
-                    )}
-                    
-                    <Link href={`/dashboard/interview/${interviewData?.mockId}/feedback`}>
-                        <Button 
-                            className='bg-red-500/20 border-red-500/30 
-                            hover:bg-red-500/40 text-red-400 
-                            flex items-center space-x-2'
-                        >
-                            <StopCircle size={16} />
-                            <span>End Interview</span>
-                        </Button>
-                    </Link>
+            <div className="container mx-auto px-6 py-10 h-full overflow-auto">
+                <div className='flex flex-col md:grid md:grid-cols-2 gap-12 h-full'>
+                    {/* Questions Section - Always First on Mobile */}
+                    <div className='order-1 md:order-none mt-6'>
+                        <QuestionsSection 
+                            mockInterviewQues={mockInterviewQues}
+                            activeQuestionIndex={activeQuestionIndex}
+                            onQuestionChange={setActiveQuestionIndex}
+                        />
+                    </div>
+
+                    {/* Recording Section - Second on Mobile */}
+                    <div className='order-2 md:order-none'>
+                        <RecordAnsSection
+                            mockInterviewQues={mockInterviewQues}
+                            activeQuestionIndex={activeQuestionIndex}
+                            interviewData={interviewData}
+                        />
+                    </div>
+
+                    {/* Navigation Buttons - Always Last on Mobile */}
+                    <div className='order-3 md:order-none mt-6 md:mt-0'>
+                        <div className='flex justify-end space-x-4'>
+                            {activeQuestionIndex > 0 && (
+                                <Button 
+                                    onClick={() => setActiveQuestionIndex(activeQuestionIndex - 1)}
+                                    className='bg-transparent border-white/20 text-white hover:bg-white/10 flex items-center space-x-2'
+                                >
+                                    <ArrowLeft size={16} />
+                                    <span>Previous</span>
+                                </Button>
+                            )}
+                            
+                            {activeQuestionIndex < mockInterviewQues?.length - 1 && (
+                                <Button 
+                                    onClick={() => setActiveQuestionIndex(activeQuestionIndex + 1)}
+                                    className='bg-gradient-to-r from-cyan-500 to-blue-500 
+                                    hover:from-cyan-600 hover:to-blue-600 
+                                    flex items-center space-x-2'
+                                >
+                                    <span>Next</span>
+                                    <ArrowRight size={16} />
+                                </Button>
+                            )}
+                            
+                            <Link href={`/dashboard/interview/${interviewData?.mockId}/feedback`}>
+                                <Button 
+                                    className='bg-red-500/20 border-red-500/30 
+                                    hover:bg-red-500/40 text-red-400 
+                                    flex items-center space-x-2'
+                                >
+                                    <StopCircle size={16} />
+                                    <span>End</span>
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -50,8 +50,7 @@
 import { Lightbulb, Volume2 } from 'lucide-react';
 import React, { useState } from 'react'
 
-function QuestionsSection({mockInterviewQues, activeQuestionIndex}) {
-    console.log("miq: " ,mockInterviewQues);
+function QuestionsSection({mockInterviewQues, activeQuestionIndex, onQuestionChange}) {
     const [isSpeaking, setIsSpeaking] = useState(false);
     const textToSpeech = (text) => {
         if('speechSynthesis' in window){
@@ -64,12 +63,20 @@ function QuestionsSection({mockInterviewQues, activeQuestionIndex}) {
             alert('Sorry! Your browser does not support text-to-speech');
         }
     }
+
+    const handleQuestionChange = (index) => {
+        if (onQuestionChange) {
+            onQuestionChange(index);
+        }
+    }
+
   return mockInterviewQues && (
     <div className='mt-10 bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 space-y-6'>
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
             {mockInterviewQues && mockInterviewQues.map((question, index)=>(
-                <div 
+                <button 
                     key={index} 
+                    onClick={() => handleQuestionChange(index)}
                     className={`
                         p-2 
                         rounded-xl 
@@ -77,6 +84,7 @@ function QuestionsSection({mockInterviewQues, activeQuestionIndex}) {
                         cursor-pointer 
                         transition-all 
                         duration-300 
+                        focus:outline-none
                         ${activeQuestionIndex === index 
                             ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white' 
                             : 'bg-white/10 text-gray-300 hover:bg-white/20'}
@@ -85,7 +93,7 @@ function QuestionsSection({mockInterviewQues, activeQuestionIndex}) {
                     <span className='text-sm font-medium'>
                         Question #{index+1}
                     </span>
-                </div>
+                </button>
             ))}
         </div>
 
