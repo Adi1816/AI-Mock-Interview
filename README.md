@@ -157,8 +157,8 @@ This project is licensed under the MIT License.
 ## 📞 Contact
 
 Aditya Srivastava
-- LinkedIn: [Profile Link]([https://www.linkedin.com/in/your-profile](https://www.linkedin.com/in/aditya-srivastava-12476524a/])
+- LinkedIn: [Profile Link](https://www.linkedin.com/in/your-profile](https://www.linkedin.com/in/aditya-srivastava-12476524a/)
 - Email: sriaditya16@gmail.com
-- Portfolio: [My Portfolio Website]([https://your-portfolio.com](https://adi1816.github.io/AdiInYourHeart/])
+- Portfolio: [My Portfolio Website](https://your-portfolio.com](https://adi1816.github.io/AdiInYourHeart/)
 
 ---
