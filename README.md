@@ -4,7 +4,7 @@
 
 An cutting-edge AI-powered mock interview platform designed to revolutionize interview preparation through advanced technology and intelligent feedback mechanisms.
 
-![Project Banner](link_to_project_banner.png)
+![Project Banner](Banner.png)
 
 ## 🔥 Key Features
 
