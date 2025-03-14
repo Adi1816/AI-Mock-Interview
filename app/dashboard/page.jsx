@@ -41,7 +41,7 @@ function Dashboard() {
               <h1 className="mt-20 text-4xl md:text-5xl font-bold 
                 bg-clip-text text-transparent 
                 bg-gradient-to-r from-cyan-300 to-blue-500 
-                tracking-tight">
+                ">
                 Dashboard
               </h1>
               <p className="text-lg text-gray-300 mt-3 max-w-xl">

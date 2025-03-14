@@ -198,16 +198,42 @@ function Feedback({ params }) {
         <div className="fixed inset-0 bg-gradient-to-br from-slate-700 via-black to-slate-800 text-white overflow-hidden">
             <div className="mt-6 container mx-auto px-6 py-10 h-full overflow-auto no-scrollbar">
                 <div className="space-y-8">
-                    <div>
-                        <h2 className="mt-16 text-4xl md:text-5xl font-bold 
-                            bg-clip-text text-transparent 
-                            bg-gradient-to-r from-cyan-300 to-blue-500 mb-4">
-                            Congratulations!
-                        </h2>
-                        <h3 className="text-2xl font-bold text-gray-300">
-                            Here is your Interview Feedback
-                        </h3>
+                    {/* Desktop/Tablet Back to Dashboard Button */}
+                    <div className='hidden md:flex justify-between items-center'>
+                        <div className='flex flex-col'>
+                            <h2 className="mt-16 text-4xl md:text-5xl font-bold 
+                                bg-clip-text text-transparent 
+                                bg-gradient-to-r from-cyan-300 to-blue-500 mb-2">
+                                Congratulations!
+                            </h2>
+                            <h3 className="text-2xl font-bold text-gray-300">
+                                Here is your Interview Feedback
+                            </h3>
+                        </div>
+                        <Button 
+                            onClick={() => router.replace('/dashboard')}
+                            className="text-lg p-6 mr-2 mt-10 bg-transparent border-white/20 text-white hover:bg-white/10 flex items-center space-x-2"
+                        >
+                            <ArrowLeft size={20} />
+                            <span>Back to Dashboard</span>
+                        </Button>
                     </div>
+
+                    {/* Mobile Back to Dashboard Button */}
+                    <div className='md:hidden flex justify-between items-center mb-4'>
+                        <div>
+                            <h2 className="text-3xl font-bold 
+                                bg-clip-text text-transparent 
+                                bg-gradient-to-r from-cyan-300 to-blue-500 mb-2">
+                                Congratulations!
+                            </h2>
+                            <h3 className="text-xl font-bold text-gray-300">
+                                Interview Feedback
+                            </h3>
+                        </div>
+                    </div>
+                    
+            
 
                     {feedbackList.length === 0 ? (
                         <div className="text-center py-12">
@@ -289,10 +315,11 @@ function Feedback({ params }) {
                         </>
                     )}
 
-                    <div className="flex justify-end">
+                    {/* Mobile Back to Dashboard Button */}
+                    <div className='md:hidden flex justify-end mt-6'>
                         <Button 
                             onClick={() => router.replace('/dashboard')}
-                            className="text-lg mb-16 p-6 bg-transparent border-white/20 text-white hover:bg-white/10 flex items-center space-x-2"
+                            className="text-lg p-6 bg-transparent border-white/20 text-white hover:bg-white/10 flex items-center space-x-2"
                         >
                             <ArrowLeft size={20} />
                             <span>Back to Dashboard</span>
