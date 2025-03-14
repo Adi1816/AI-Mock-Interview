@@ -44,7 +44,7 @@ function Dashboard() {
                 tracking-tight">
                 Dashboard
               </h1>
-              <p className="text-lg text-gray-300 font-medium mt-3 max-w-xl">
+              <p className="text-lg text-gray-300 mt-3 max-w-xl">
                 Elevate your interview preparation with AI-powered mock interviews. 
                 Personalized, intelligent, and designed to help you succeed.
               </p>
@@ -61,7 +61,7 @@ function Dashboard() {
                     className="text-blue-400" 
                     size={30} 
                   />
-                  <h2 className="text-xl font-semibold 
+                  <h2 className="text-xl font-bold 
                     bg-clip-text text-transparent 
                     bg-gradient-to-r from-cyan-300 to-blue-500">
                     Create New Interview

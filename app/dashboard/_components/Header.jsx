@@ -141,7 +141,7 @@ function Header() {
                                 size={20} 
                             />
                             <span className={`
-                                text-sm font-medium
+                                text-sm font-light
                                 ${item.active 
                                     ? 'bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-blue-500' 
                                     : ''}

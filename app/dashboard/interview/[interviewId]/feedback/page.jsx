@@ -204,7 +204,7 @@ function Feedback({ params }) {
                             bg-gradient-to-r from-cyan-300 to-blue-500 mb-4">
                             Congratulations!
                         </h2>
-                        <h3 className="text-2xl font-semibold text-gray-300">
+                        <h3 className="text-2xl font-bold text-gray-300">
                             Here is your Interview Feedback
                         </h3>
                     </div>
@@ -221,7 +221,7 @@ function Feedback({ params }) {
                         <>
                             <div className=" bg-purple-500/10 border-purple-500/20 blue-500/30 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
                                 <div className="flex items-center space-x-4">
-                                    <h2 className="text-xl font-semibold text-gray-300">
+                                    <h2 className="text-xl font-bold text-gray-300">
                                         Overall Rating:
                                     </h2>
                                     <span className="text-3xl font-bold 
@@ -243,7 +243,7 @@ function Feedback({ params }) {
                                             <div className="bg-white/5 backdrop-blur-xl rounded-xl p-4 
                                                 border border-white/10 flex justify-between items-center 
                                                 hover:bg-white/10 transition-all">
-                                                <span className="text-gray-300 font-medium">
+                                                <span className="text-gray-300 font-light">
                                                     {item.question}
                                                 </span>
                                                 <ChevronsUpDown className="text-gray-500 w-5 h-5" />
@@ -257,7 +257,7 @@ function Feedback({ params }) {
                                                         ? 'bg-green-500/10 border-green-500/30' 
                                                         : 'bg-red-500/10 border-red-500/30'}`}>
                                                     <div className="flex items-center space-x-2">
-                                                        <span className="font-semibold text-gray-300">Rating:</span>
+                                                        <span className="font-bold text-gray-300">Rating:</span>
                                                         <span className="text-lg font-bold 
                                                             bg-clip-text text-transparent 
                                                             bg-gradient-to-r from-cyan-300 to-blue-500">
@@ -268,17 +268,17 @@ function Feedback({ params }) {
                                                 </div>
 
                                                 <div className="bg-white/10 p-4 rounded-xl">
-                                                    <h3 className="text-cyan-400 font-semibold mb-2">Your Answer:</h3>
+                                                    <h3 className="text-cyan-400 font-bold mb-2">Your Answer:</h3>
                                                     <p className="text-gray-300">{item.userAnswer}</p>
                                                 </div>
 
                                                 <div className="bg-white/10 p-4 rounded-xl">
-                                                    <h3 className="text-green-400 font-semibold mb-2">AI's Answer:</h3>
+                                                    <h3 className="text-green-400 font-bold mb-2">AI's Answer:</h3>
                                                     <p className="text-gray-300">{item.correctAns}</p>
                                                 </div>
 
                                                 <div className="bg-yellow-500/10 border-yellow-500/30 p-4 rounded-xl">
-                                                    <h3 className="text-yellow-400 font-semibold mb-2">Feedback:</h3>
+                                                    <h3 className="text-yellow-400 font-bold mb-2">Feedback:</h3>
                                                     <p className="text-gray-300">{item.feedback}</p>
                                                 </div>
                                             </div>

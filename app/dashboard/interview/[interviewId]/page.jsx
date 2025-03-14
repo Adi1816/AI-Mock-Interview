@@ -141,7 +141,7 @@ function Interview({params}) {
                             <div className='space-y-4'>
                                 <div className='flex items-center space-x-3'>
                                     <span className='w-2 h-2 bg-blue-500 rounded-full'></span>
-                                    <h2 className='text-lg font-semibold'>
+                                    <h2 className='text-lg font-bold'>
                                         <span className='text-gray-400 mr-2'>Job Title:</span>
                                         <span className='bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-blue-500'>
                                             {interviewData?.jobPosition}
@@ -150,7 +150,7 @@ function Interview({params}) {
                                 </div>
                                 <div className='flex items-center space-x-3'>
                                     <span className='w-2 h-2 bg-green-500 rounded-full'></span>
-                                    <h2 className='text-lg font-semibold'>
+                                    <h2 className='text-lg font-bold'>
                                         <span className='text-gray-400 mr-2'>Tech Stacks:</span>
                                         <span className='bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-blue-500'>
                                             {interviewData?.techStacks}
@@ -159,7 +159,7 @@ function Interview({params}) {
                                 </div>
                                 <div className='flex items-center space-x-3'>
                                     <span className='w-2 h-2 bg-purple-500 rounded-full'></span>
-                                    <h2 className='text-lg font-semibold'>
+                                    <h2 className='text-lg font-bold'>
                                         <span className='text-gray-400 mr-2'>Job Experience:</span>
                                         <span className='bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-blue-500'>
                                             {interviewData?.jobExperience}
@@ -172,7 +172,7 @@ function Interview({params}) {
                         <div className='bg-yellow-500/10 border border-yellow-500/30 rounded-2xl p-6'>
                             <div className='flex items-center space-x-3 mb-4'>
                                 <Lightbulb className='text-yellow-500' />
-                                <h2 className='text-xl font-semibold text-yellow-500'>
+                                <h2 className='text-xl font-bold text-yellow-500'>
                                     Important Information
                                 </h2>
                             </div>

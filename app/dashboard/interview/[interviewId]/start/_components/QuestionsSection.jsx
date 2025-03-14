@@ -90,7 +90,7 @@ function QuestionsSection({mockInterviewQues, activeQuestionIndex, onQuestionCha
                             : 'bg-white/10 text-gray-300 hover:bg-white/20'}
                     `}
                 >
-                    <span className='text-sm font-medium'>
+                    <span className='text-sm font-light'>
                         Question #{index+1}
                     </span>
                 </button>
@@ -120,7 +120,7 @@ function QuestionsSection({mockInterviewQues, activeQuestionIndex, onQuestionCha
         <div className='bg-yellow-500/10 border border-yellow-500/30 rounded-2xl p-6'>
             <div className='flex items-center space-x-3 mb-4'>
                 <Lightbulb className='text-yellow-500' />
-                <h2 className='text-xl font-semibold text-yellow-500'>
+                <h2 className='text-xl font-bold text-yellow-500'>
                     Important Information
                 </h2>
             </div>

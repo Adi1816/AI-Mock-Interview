@@ -851,7 +851,7 @@ function RecordAnsSection({mockInterviewQues, activeQuestionIndex, interviewData
             {userAnswer && (
                 <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 w-full border border-white/10 max-h-48 overflow-y-auto">
                     <div className='flex justify-between items-center mb-2'>
-                        <h3 className="text-xl font-semibold 
+                        <h3 className="text-xl font-bold 
                             bg-clip-text text-transparent 
                             bg-gradient-to-r from-cyan-300 to-blue-500">
                             Your Answer
@@ -909,7 +909,7 @@ function RecordAnsSection({mockInterviewQues, activeQuestionIndex, interviewData
                 {isRecording ? (
                     <>
                         <StopCircle className="animate-pulse" size={24} />
-                        <span className='font-semibold animate-pulse'>Stop Recording</span>
+                        <span className='font-bold animate-pulse'>Stop Recording</span>
                     </>
                 ) : (
                     <>
