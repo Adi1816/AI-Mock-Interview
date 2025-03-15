@@ -107,21 +107,24 @@ npm run dev
 
    ![Project Banner](dashboard.png)
    ![Project Banner](add-details.png)
+   ![Project Banner](ques.png)
 
 4. Mock Interview Process
    - AI generates contextual questions
    - Speech recognition captures answers
    - Real-time transcription
-  
+   
    ![Project Banner](ques-section.png)
+   ![Project Banner](record.png)
+   ![Project Banner](edit.png)
   
 6. AI Generated Feedback
    - Instant AI feedback
    - Detailed analysis for each question
   
-     ![Project Banner](feedback.png)
-     ![Project Banner](feedback-rating.png)
-     ![Project Banner](feedback-rating-2.png)
+  ![Project Banner](feedback.png)
+  ![Project Banner](feedback-rating.png)
+  ![Project Banner](feedback-rating-2.png)
 
 ## 🎥 Demo
 
