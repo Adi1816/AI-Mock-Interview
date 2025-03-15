@@ -98,16 +98,30 @@ npm run dev
    - Sign up/Login via Clerk
    - Create personalized profile
 
+   ![Project Banner](auth.png)
+
 2. Interview Preparation
    - Select job role
    - Specify tech stack
    - Choose experience level
 
-3. Mock Interview Process
+   ![Project Banner](dashboard.png)
+   ![Project Banner](add-details.png)
+
+4. Mock Interview Process
    - AI generates contextual questions
    - Speech recognition captures answers
    - Real-time transcription
+  
+   ![Project Banner](ques-section.png)
+  
+6. AI Generated Feedback
    - Instant AI feedback
+   - Detailed analysis for each question
+  
+     ![Project Banner](feedback.png)
+     ![Project Banner](feedback-rating.png)
+     ![Project Banner](feedbacj-rating-2.png)
 
 ## 🎥 Demo
 
