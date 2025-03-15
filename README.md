@@ -2,7 +2,7 @@
 
 ## 🌟 Project Overview
 
-An cutting-edge AI-powered mock interview platform designed to revolutionize interview preparation through advanced technology and intelligent feedback mechanisms.
+A cutting-edge AI-powered mock interview platform designed to revolutionize interview preparation through advanced technology and intelligent feedback mechanisms.
 
 ![Project Banner](Banner.png)
 
