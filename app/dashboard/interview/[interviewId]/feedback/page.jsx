@@ -151,8 +151,10 @@ function Feedback({ params }) {
             ? parseInt(item.rating.split("/")[0])  
             : parseInt(item.rating);  
         return sum + (isNaN(rating) ? 0 : Math.min(5, rating));
-    }, 0) / feedbackList.length).toFixed(1)
+    }, 0) / feedbackList.length)
     : null;
+
+    
 
     const parseRating = (rating) => {
       if (!rating) return 0;
@@ -161,6 +163,7 @@ function Feedback({ params }) {
           : parseInt(rating);
       return isNaN(num) ? 0 : num;
     };
+    
 
     const RatingBar = ({ rating }) => {
         const normalizedRating = Math.min(5, parseFloat(rating)); 
@@ -195,7 +198,7 @@ function Feedback({ params }) {
     };
 
     return (
-        <div className="fixed inset-0 bg-gradient-to-br from-slate-700 via-black to-slate-800 text-white overflow-hidden">
+        <div className="fixed inset-0 -z-10 bg-gradient-to-br from-slate-700 via-black to-slate-800 text-white overflow-hidden">
             <div className="mt-6 container mx-auto px-6 py-10 h-full overflow-auto no-scrollbar">
                 <div className="space-y-8">
                     {/* Desktop/Tablet Back to Dashboard Button */}
@@ -245,7 +248,7 @@ function Feedback({ params }) {
                         </div>
                     ) : (
                         <>
-                            <div className=" bg-purple-500/10 border-purple-500/20 blue-500/30 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
+                            <div className=" bg-purple-500/10 border-purple-500/30 blue-500/30 backdrop-blur-xl rounded-2xl p-6 border border-white/10">
                                 <div className="flex items-center space-x-4">
                                     <h2 className="text-xl font-bold text-gray-300">
                                         Overall Rating:
@@ -253,7 +256,7 @@ function Feedback({ params }) {
                                     <span className="text-3xl font-bold 
                                             bg-clip-text text-transparent 
                                             bg-gradient-to-r from-cyan-300 to-blue-500">
-                                            {parseRating(overallRating)}/5
+                                            {overallRating ? overallRating.toFixed(1) : "0.0"}/5
                                         </span>
                                     <RatingBar rating={parseFloat(overallRating)} />
                                 </div>
