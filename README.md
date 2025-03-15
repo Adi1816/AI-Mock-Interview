@@ -121,7 +121,7 @@ npm run dev
   
      ![Project Banner](feedback.png)
      ![Project Banner](feedback-rating.png)
-     ![Project Banner](feedbacj-rating-2.png)
+     ![Project Banner](feedback-rating-2.png)
 
 ## 🎥 Demo
 
