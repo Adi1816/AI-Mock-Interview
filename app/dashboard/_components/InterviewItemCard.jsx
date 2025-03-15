@@ -228,27 +228,27 @@ function InterviewItemCard({interview, onDelete}) {
                 </div>
             </div>
 
-            <div className='grid grid-cols-[2fr_1fr_auto] gap-3 mt-4'>
+            <div className='grid grid-cols-[1fr_1fr_auto] gap-3 mt-4'>
                     <Button 
                         variant="outline" 
                         className='w-full flex items-center justify-center 
                         bg-transparent border-white/20 text-white 
                         hover:bg-white/10 hover:text-white
-                        rounded-lg'
+                        rounded-md'
                         onClick={onFeedback}
                     >
                         <FileText size={12} className="mr-1" />
                         <span>Feedback</span>
                     </Button>
                     <Button 
-                        className='w-full flex items-center justify-center space-x-1 
+                        className='w-full flex items-center justify-center space-x-0
                         bg-gradient-to-r from-cyan-500 to-blue-500 
                         hover:from-cyan-600 hover:to-blue-600
                         py-2 px-2
-                        rounded-lg'
+                        rounded-md'
                         onClick={onStart}
                     >
-                        <Zap size={14} />
+                        <Zap size={14}/>
                         <span>Start</span>
                     </Button>
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -258,7 +258,7 @@ function InterviewItemCard({interview, onDelete}) {
                                 className='w-auto px-2
                                 bg-red-500/20 border-red-500/30 
                                 hover:bg-red-500/40 text-red-400
-                                rounded-lg'
+                                rounded-md'
                             >
                                 <Trash2 size={16} />
                             </Button>
