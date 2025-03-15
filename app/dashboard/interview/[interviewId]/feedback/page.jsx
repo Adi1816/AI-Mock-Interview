@@ -146,23 +146,35 @@ function Feedback({ params }) {
 
     // Calculate Overall Rating (out of 5)
     const overallRating = feedbackList.length > 0
-    ? (feedbackList.reduce((sum, item) => {
-        let rating = item.rating.toString().includes("/") 
-            ? parseInt(item.rating.split("/")[0])  
-            : parseInt(item.rating);  
-        return sum + (isNaN(rating) ? 0 : Math.min(5, rating));
-    }, 0) / feedbackList.length)
-    : null;
+        ? (feedbackList.reduce((sum, item) => {
+            let rating = item.rating.toString().includes("/") 
+                ? parseFloat(item.rating.split("/")[0])  
+                : parseFloat(item.rating);
+            
+            // Normalize rating to 5-point scale if it's out of 10
+            if (rating > 5) {
+            rating = (rating / 10) * 5;
+            }
+            
+            return sum + (isNaN(rating) ? 0 : Math.min(5, rating));
+        }, 0) / feedbackList.length)
+        : null;
 
     
 
     const parseRating = (rating) => {
-      if (!rating) return 0;
-      let num = rating.toString().includes("/") 
-          ? parseInt(rating.split("/")[0])  
-          : parseInt(rating);
-      return isNaN(num) ? 0 : num;
-    };
+        if (!rating) return 0;
+        let num = rating.toString().includes("/") 
+            ? parseFloat(rating.split("/")[0])  
+            : parseFloat(rating);
+        
+        // Normalize rating to 5-point scale
+        if (num > 5) {
+          num = (num / 10) * 5; // Convert 10-point scale to 5-point scale
+        }
+        
+        return Math.min(Math.max(num, 0), 5);
+      };
     
 
     const RatingBar = ({ rating }) => {
@@ -254,10 +266,10 @@ function Feedback({ params }) {
                                         Overall Rating:
                                     </h2>
                                     <span className="text-3xl font-bold 
-                                            bg-clip-text text-transparent 
-                                            bg-gradient-to-r from-cyan-300 to-blue-500">
-                                            {overallRating ? overallRating.toFixed(1) : "0.0"}/5
-                                        </span>
+                                        bg-clip-text text-transparent 
+                                        bg-gradient-to-r from-cyan-300 to-blue-500">
+                                        {overallRating ? overallRating.toFixed(1) : "0.0"}/5
+                                    </span>
                                     <RatingBar rating={parseFloat(overallRating)} />
                                 </div>
                                 <p className="text-gray-400 mt-2">
@@ -290,7 +302,7 @@ function Feedback({ params }) {
                                                         <span className="text-lg font-bold 
                                                             bg-clip-text text-transparent 
                                                             bg-gradient-to-r from-cyan-300 to-blue-500">
-                                                            {parseRating(item.rating)}/5
+                                                            {parseRating(item.rating).toFixed(1)}/5
                                                         </span>
                                                         <RatingBar rating={item.rating} />
                                                     </div>
