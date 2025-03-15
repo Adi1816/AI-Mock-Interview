@@ -23,6 +23,11 @@ A cutting-edge AI-powered mock interview platform designed to revolutionize inte
 - Instant rating and detailed feedback
 - Personalized improvement suggestions
 
+### ❌ Delete Feature (New!)
+- Users can delete past interview sessions
+- Ensures privacy and control over data
+- One-click deletion for convenience
+
 ### 🔒 Secure Authentication
 - Seamless Clerk authentication
 - User profile management
@@ -110,7 +115,7 @@ npm run dev
    ![Project Banner](add-details.png)
    ![Project Banner](ques.png)
 
-4. Mock Interview Process
+3. Mock Interview Process
    - AI generates contextual questions
    - Speech recognition captures answers
    - Real-time transcription
@@ -118,8 +123,15 @@ npm run dev
    ![Project Banner](ques-section.png)
    ![Project Banner](record.png)
    ![Project Banner](edit.png)
+
+4. Delete Feature
+   - Users can delete past interview sessions
+   - Ensures privacy and control over data
+   - One-click deletion for convenience
   
-6. AI Generated Feedback
+   ![Project Banner](ques-section.png)
+  
+5. AI Generated Feedback
    - Instant AI feedback
    - Detailed analysis for each question
   
