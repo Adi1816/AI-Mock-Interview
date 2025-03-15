@@ -111,7 +111,7 @@ npm run dev
    - Specify tech stack
    - Choose experience level
 
-   ![Project Banner](dashboard.png)
+   ![Project Banner](dashboard-new.png)
    ![Project Banner](add-details.png)
    ![Project Banner](ques.png)
 
@@ -129,7 +129,7 @@ npm run dev
    - Ensures privacy and control over data
    - One-click deletion for convenience
   
-   ![Project Banner](ques-section.png)
+   ![Project Banner](del.png)
   
 5. AI Generated Feedback
    - Instant AI feedback
