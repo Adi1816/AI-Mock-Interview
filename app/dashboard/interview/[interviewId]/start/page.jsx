@@ -163,8 +163,8 @@ function StartInterview({params}) {
                     </div>
 
                     {/* Navigation Buttons - Always Last on Mobile */}
-                    <div className='order-3 md:order-none mt-6 md:mt-0'>
-                        <div className='flex justify-end space-x-4'>
+                    <div className='order-3 md:order-none mt-6 md:-mt-2'>
+                        <div className='flex justify-end space-x-4 mb-6'>
                             {activeQuestionIndex > 0 && (
                                 <Button 
                                     onClick={() => setActiveQuestionIndex(activeQuestionIndex - 1)}
