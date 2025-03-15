@@ -269,7 +269,7 @@ function AddNewInterview() {
           bg-clip-text text-transparent 
           bg-gradient-to-r from-cyan-200 to-blue-400 
           group-hover:text-white'>
-          THE AI Magic!
+          The AI Magic!
         </h2>
         <h5 className='font-light text-sm text-center 
           bg-clip-text text-transparent 
