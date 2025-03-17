@@ -357,7 +357,7 @@ function AddNewInterview() {
                 type="button" 
                 variant="outline" 
                 onClick={() => setOpenDialog(false)} 
-                className='bg-transparent border-white/20 text-white hover:bg-white/10'
+                className='bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white'
               >
                 Cancel
               </Button>
