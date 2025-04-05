@@ -752,7 +752,7 @@ function RecordAnsSection({mockInterviewQues, activeQuestionIndex, interviewData
             const feedbackPrompt = "Question: " + mockInterviewQues[activeQuestionIndex]?.ques +
                 ", User Answer: " + finalTranscript +
                 ", Depending on question and user answer for given interview question" +
-                " Please give us rating for answer and feedback as area of improvement if any." +
+                " Please give us rating for answer and feedback as area of improvement if any. The rating should be upon 5." +
                 "In Just 3 to 5 lines to improve it in JSON format with rating field and feedback field." +
                 "Strictly follow these JSON rules:1. **Do not include any markdown formatting** (like ```json or ```)." +
                 "2. Ensure that all answers are **single-line or properly escaped**." +
