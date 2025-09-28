@@ -159,24 +159,12 @@ npm run dev
 - Machine learning-based personalization
 - Integration with job platforms
 
-## 🤝 Contribution Guidelines
-
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
 ## 📊 Performance Metrics
 
 - Lighthouse Score: 90+
 - Accessibility: WCAG 2.1 Compliant
 - Responsive Design: 100%
 - Browser Compatibility: Chrome, Firefox, Safari, Edge
-
-## 📜 License
-
-This project is licensed under the MIT License.
 
 ## 🙌 Acknowledgements
 
@@ -192,4 +180,10 @@ Aditya Srivastava
 - LinkedIn: [Profile Link](https://www.linkedin.com/in/aditya-srivastava-12476524a/)
 - Email: sriaditya16@gmail.com
 - Portfolio: [My Portfolio Website](https://adi1816.github.io/AdiInYourHeart/)
+
+## 📜 Copyright and Licensing
+
+Copyright © 2025 Aditya Srivastava. All Rights Reserved.
+
+This project's source code is provided for educational and demonstrational purposes only. You may view the code, but you are not permitted to modify, distribute, or use it in any of your own projects, whether personal or commercial, without the express written permission of the author.
 ---
