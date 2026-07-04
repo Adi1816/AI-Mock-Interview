@@ -1,16 +1,8 @@
 "use client";
 
 import { UserButton } from "@clerk/nextjs";
+import { clerkAppearance } from "@/utils/clerkAppearance";
 
 export default function ClientUserButton() {
-  return (
-    <UserButton 
-      afterSignOutUrl="/"
-      appearance={{
-        elements: {
-          userButtonAvatarBox: 'w-12 h-12',
-        }
-      }}
-    />
-  );
+  return <UserButton afterSignOutUrl="/" appearance={clerkAppearance} />;
 }

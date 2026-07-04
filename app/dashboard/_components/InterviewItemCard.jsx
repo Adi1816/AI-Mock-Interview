@@ -1,305 +1,155 @@
-// import { Button } from '@/components/ui/button'
-// import Link from 'next/link'
-// import { useRouter } from 'next/navigation'
-// import React from 'react'
+"use client";
 
-// function InterviewItemCard({interview}) {
-//     const router=useRouter();
-//     const onStart=()=>{
-//         router.push(`/dashboard/interview/${interview?.mockId}`)
-//         console.log('start clicked', interview?.mockId);
-//     }
-//     const onFeedback=()=>{
-//         router.push(`/dashboard/interview/${interview?.mockId}/feedback`)
-//         console.log('feedback clicked', interview?.mockId);
-//     }
-//   return (
-//     <div className='border border-pink-100 shadow-md rounded-lg p-3'>
-//         <h2 className='font-bold text-pink-600 text-lg'>{interview?.jobPosition}</h2>
-//         <h2 className='font-bold text-gray-600 text-sm'>Years of Experience: {interview.jobExperience} years</h2>
-//         <h2 className='font-bold text-gray-400 text-xs'>Created At: {interview.createdAt}</h2>
-
-//         <div className='flex justify-between mt-3 gap-5'>
-//             {/* <Link href={'/dashboard/interview/'+interview?.mockId}> */}
-//             <Button size='sm' variant='outline' className='w-full font-bold'
-//             onClick={onFeedback}>Feedback</Button>
-//             {/* </Link> */}
-//             <Button size='sm' className='w-full font-bold' 
-//             onClick={onStart}>Start</Button>
-//         </div>
-//     </div>
-//   )
-// }
-
-// export default InterviewItemCard
-
-// ----------------------------------------------------------------
-
-// import { Button } from '@/components/ui/button'
-// import { Zap, FileText } from 'lucide-react'
-// import { useRouter } from 'next/navigation'
-// import React from 'react'
-
-// function InterviewItemCard({interview}) {
-//     const router=useRouter();
-//     const onStart=()=>{
-//         router.push(`/dashboard/interview/${interview?.mockId}`)
-//         console.log('start clicked', interview?.mockId);
-//     }
-//     const onFeedback=()=>{
-//         router.push(`/dashboard/interview/${interview?.mockId}/feedback`)
-//         console.log('feedback clicked', interview?.mockId);
-//     }
-
-//     return (
-//         <div 
-//             className='bg-white/5 
-//             backdrop-blur-xl 
-//             border-2 border-transparent 
-//             hover:border-blue-500/20 
-//             rounded-2xl 
-//             p-5
-//             space-y-4 
-//             transition-all 
-//             duration-300 
-//             transform 
-//             hover:scale-105 
-//             hover:shadow-2xl 
-//             flex 
-//             flex-col 
-//             justify-between 
-//             h-full w-80'
-//         >
-//             <div>
-//                 <div className='flex justify-between items-center mb-4'>
-//                     <h2 className='text-xl font-bold 
-//                         bg-clip-text text-transparent 
-//                         bg-gradient-to-r from-cyan-300 to-blue-500'>
-//                         {interview?.jobPosition}
-//                     </h2>
-//                     <h2 className='text-xs text-gray-400 
-//                         bg-white/10 
-//                         px-2 py-2
-//                         rounded-lg'>
-//                         {interview.jobExperience} years
-//                     </h2>
-//                 </div>
-
-//                 <div className='space-y-2'>
-//                     <p className='text-sm text-gray-300 flex items-center space-x-2'>
-//                         <span className='w-2 h-2 bg-blue-500 rounded-full'></span>
-//                         <span>Tech Stack: {interview?.techStacks || 'Not specified'}</span>
-//                     </p>
-//                     <p className='text-xs text-gray-400 flex items-center space-x-2'>
-//                         <span className='w-2 h-2 bg-green-500 rounded-full'></span>
-//                         <span>Created: {interview.createdAt}</span>
-//                     </p>
-//                 </div>
-//             </div>
-
-//             <div className='grid grid-cols-2 gap-5 mt-4'>
-//                 <Button 
-//                     variant="outline" 
-//                     className='w-full flex items-center justify-center 
-//                     bg-transparent border-white/20 text-white 
-//                     hover:bg-white/10 hover:text-white
-//                     rounded-lg'
-//                     onClick={onFeedback}
-//                 >
-//                     <FileText size={12} />
-//                     <span>Feedback</span>
-//                 </Button>
-//                 <Button 
-//                     className='w-full flex items-center justify-center space-x-2 
-//                     bg-gradient-to-r from-cyan-500 to-blue-500 
-//                     hover:from-cyan-600 hover:to-blue-600
-//                     py-2 px-3
-//                     rounded-lg'
-//                     onClick={onStart}
-//                 >
-//                     <Zap size={16} />
-//                     <span>Start</span>
-//                 </Button>
-//             </div>
-//         </div>
-//     )
-// }
-
-// export default InterviewItemCard
-
-// ----------------------------------------------------------------
-
-"use client"
-import { Button } from '@/components/ui/button'
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
   DialogDescription,
   DialogFooter,
-  DialogTrigger
-} from "@/components/ui/dialog"
-import { Zap, FileText, Trash2, AlertTriangle } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
-import { deleteInterview } from '@/utils/interviewUtils'
-import { toast } from 'sonner'
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { AlertTriangle, BarChart3, FileText, Play, Trash2 } from "lucide-react";
+import Link from "next/link";
+import React, { useState } from "react";
+import { deleteLocalInterview, isLocalInterviewId } from "@/utils/client/localInterviews";
+import { useUser } from "@clerk/nextjs";
+import { toast } from "sonner";
 
-function InterviewItemCard({interview, onDelete}) {
-    const router = useRouter();
-    const [isDeleting, setIsDeleting] = useState(false);
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
+function InterviewItemCard({ interview, onDelete }) {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { user } = useUser();
 
-    const onStart = () => {
-        router.push(`/dashboard/interview/${interview?.mockId}`)
+  const handleDelete = async () => {
+    setIsDeleting(true);
+
+    try {
+      if (interview.local || isLocalInterviewId(interview.mockId)) {
+        deleteLocalInterview(interview.mockId, user?.id);
+        toast.success("Local interview deleted");
+        onDelete?.(interview.mockId);
+        setIsDialogOpen(false);
+        return;
+      }
+
+      const response = await fetch(`/api/interviews/${interview.mockId}`, {
+        method: "DELETE",
+      });
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(payload.error || "Failed to delete interview");
+      }
+
+      toast.success("Interview deleted");
+      onDelete?.(interview.mockId);
+      setIsDialogOpen(false);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsDeleting(false);
     }
+  };
 
-    const onFeedback = () => {
-        router.push(`/dashboard/interview/${interview?.mockId}/feedback`)
-    }
+  return (
+    <div className="flex h-full flex-col justify-between rounded-xl border border-white/10 bg-white/5 p-5 transition-all duration-300 hover:border-blue-500/30 hover:bg-white/10">
+      <div>
+        <div className="mb-4 flex items-start justify-between gap-4">
+          <div>
+            <h2 className="bg-gradient-to-r from-cyan-300 to-blue-500 bg-clip-text text-xl font-bold text-transparent">
+              {interview.jobPosition}
+            </h2>
+            <p className="mt-1 text-xs uppercase tracking-wide text-gray-500">
+              {interview.interviewType || "technical"} - {interview.difficulty || "mid"}
+            </p>
+          </div>
+          <span className="shrink-0 rounded-md bg-white/10 px-2 py-1 text-xs text-gray-300">
+            {interview.jobExperience} yrs
+          </span>
+        </div>
 
-    const handleDelete = async () => {
-        setIsDeleting(true);
-        try {
-            const result = await deleteInterview(interview?.mockId);
-            
-            if (result.success) {
-                toast.success("Interview deleted successfully");
-                if (onDelete) {
-                    onDelete(interview?.mockId);
-                }
-                setIsDialogOpen(false);
-            } else {
-                toast.error("Failed to delete interview");
-            }
-        } catch (error) {
-            console.error("Deletion error:", error);
-            toast.error("An error occurred while deleting the interview");
-        } finally {
-            setIsDeleting(false);
-        }
-    }
+        <div className="space-y-2 text-sm text-gray-300">
+          <p>
+            <span className="text-gray-500">Stack:</span> {interview.techStacks || "Not specified"}
+          </p>
+          <p>
+            <span className="text-gray-500">Created:</span> {interview.createdAt}
+          </p>
+          {interview.overallRating && (
+            <p className="flex items-center gap-2 text-cyan-300">
+              <BarChart3 size={16} />
+              {Number(interview.overallRating).toFixed(1)}/5 overall
+            </p>
+          )}
+        </div>
+      </div>
 
-    return (
-        <>
-            <div 
-                className='bg-white/5 
-                backdrop-blur-xl 
-                border-2 border-transparent 
-                hover:border-blue-500/20 
-                rounded-2xl 
-                p-5
-                space-y-4 
-                transition-all 
-                duration-300 
-                transform 
-                hover:scale-105 
-                hover:shadow-2xl 
-                flex 
-                flex-col 
-                justify-between 
-                h-full w-80'
+      <div className="mt-5 grid grid-cols-[1fr_1fr_auto] gap-3">
+        <Button
+          asChild
+          variant="outline"
+          className="border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white"
+        >
+          <Link href={`/dashboard/interview/${interview.mockId}/feedback`}>
+            <FileText size={14} />
+            Feedback
+          </Link>
+        </Button>
+        <Button
+          asChild
+          className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-600 hover:to-blue-600"
+        >
+          <Link href={`/dashboard/interview/${interview.mockId}`}>
+            <Play size={14} />
+            Start
+          </Link>
+        </Button>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button
+              type="button"
+              variant="destructive"
+              className="bg-red-500/20 px-3 text-red-300 hover:bg-red-500/40"
             >
-            <div>
-                <div className='flex justify-between items-center mb-4'>
-                    <h2 className='text-xl font-bold 
-                        bg-clip-text text-transparent 
-                        bg-gradient-to-r from-cyan-300 to-blue-500'>
-                        {interview?.jobPosition}
-                    </h2>
-                    <h2 className='text-xs text-gray-400 
-                        bg-white/10 
-                        px-2 py-2
-                        rounded-lg'>
-                        {interview.jobExperience} years
-                    </h2>
-                </div>
-
-                <div className='space-y-2'>
-                    <p className='text-sm text-gray-300 flex items-center space-x-2'>
-                        <span className='w-2 h-2 bg-blue-500 rounded-full'></span>
-                        <span>Tech Stack: {interview?.techStacks || 'Not specified'}</span>
-                    </p>
-                    <p className='text-xs text-gray-400 flex items-center space-x-2'>
-                        <span className='w-2 h-2 bg-green-500 rounded-full'></span>
-                        <span>Created: {interview.createdAt}</span>
-                    </p>
-                </div>
-            </div>
-
-            <div className='grid grid-cols-[1fr_1fr_auto] gap-3 mt-4'>
-                    <Button 
-                        variant="outline" 
-                        className='w-full flex items-center justify-center 
-                        bg-transparent border-white/20 text-white 
-                        hover:bg-white/10 hover:text-white
-                        rounded-md'
-                        onClick={onFeedback}
-                    >
-                        <FileText size={12} className="mr-1" />
-                        <span>Feedback</span>
-                    </Button>
-                    <Button 
-                        className='w-full flex items-center justify-center space-x-0
-                        bg-gradient-to-r from-cyan-500 to-blue-500 
-                        hover:from-cyan-600 hover:to-blue-600
-                        py-2 px-2
-                        rounded-md'
-                        onClick={onStart}
-                    >
-                        <Zap size={14}/>
-                        <span>Start</span>
-                    </Button>
-                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                        <DialogTrigger asChild>
-                            <Button 
-                                variant="destructive"
-                                className='w-auto px-2
-                                bg-red-500/20 border-red-500/30 
-                                hover:bg-red-500/40 text-red-400
-                                rounded-md'
-                            >
-                                <Trash2 size={16} />
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className="bg-slate-900 border-white/10">
-                            <DialogHeader>
-                                <DialogTitle className="flex items-center space-x-2">
-                                    <AlertTriangle className="text-yellow-500" size={24} />
-                                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-red-500 to-yellow-500">
-                                        Confirm Deletion
-                                    </span>
-                                </DialogTitle>
-                                <DialogDescription className="text-gray-400">
-                                    Are you sure you want to delete this interview?
-                                    This action cannot be undone and will permanently remove 
-                                    all associated data.
-                                </DialogDescription>
-                            </DialogHeader>
-                            <DialogFooter className="flex justify-end space-x-4">
-                                <Button 
-                                    variant="outline" 
-                                    onClick={() => setIsDialogOpen(false)}
-                                    className="bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white"
-                                >
-                                    Cancel
-                                </Button>
-                                <Button 
-                                    variant="destructive" 
-                                    onClick={handleDelete}
-                                    disabled={isDeleting}
-                                    className="bg-red-500/20 border-red-500/30 hover:bg-red-500/40 text-red-400"
-                                >
-                                    {isDeleting ? 'Deleting...' : 'Delete Interview'}
-                                </Button>
-                            </DialogFooter>
-                        </DialogContent>
-                    </Dialog>
-                </div>
-            </div>
-        </>
-    )
+              <Trash2 size={16} />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="border-white/10 bg-slate-900 text-white">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <AlertTriangle className="text-yellow-500" size={22} />
+                Delete Interview
+              </DialogTitle>
+              <DialogDescription className="text-gray-400">
+                This permanently removes the interview, answers, traces, and practice plans for this session.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter className="gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsDialogOpen(false)}
+                className="border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="bg-red-500/20 text-red-300 hover:bg-red-500/40"
+              >
+                {isDeleting ? "Deleting..." : "Delete"}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </div>
+  );
 }
 
-export default InterviewItemCard
+export default InterviewItemCard;

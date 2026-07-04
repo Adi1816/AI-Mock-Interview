@@ -1,180 +1,119 @@
-// "use client";
-
-// import Image from 'next/image'
-// import { UserButton } from '@clerk/nextjs'
-// import { usePathname , useRouter } from 'next/navigation'
-// import React, { useEffect } from 'react'
-
-// function Header() {
-
-//     const path=usePathname();
-//     const router=useRouter(); //ye path de dega, jaise /dashbaord 
-//     useEffect(()=>{
-//         console.log(path)
-//     }, [])
-
-//   return (
-//     <div className='flex p-2 items-center justify-between bg-transparent z-9999'>
-//         <Image src='/logo.svg' width={50} height={50} alt='Logo'></Image>
-//         <ul className='hidden md:flex gap-10'>
-//         <li 
-//                     className={`hover:text-primary hover:font-bold transition-all cursor-pointer 
-//                     ${path === '/' && 'text-primary font-bold'}`} 
-//                     onClick={() => router.push('/dashboard')} // Home pe click par "/" route
-//                 >
-//                     Dashboard
-//                 </li>
-//             <li className={`hover:text-primary hover:font-bold transition-all cursor-pointer 
-//             ${path==='/dashboard/questions' && 'text-primary font-bold'}
-//             `} >Questions</li>
-//             <li className={`hover:text-primary hover:font-bold transition-all cursor-pointer 
-//             ${path==='/dashboard/upgrade' && 'text-primary font-bold'}
-//             `} >Upgrade</li>
-//             <li 
-//                     className={`hover:text-primary hover:font-bold transition-all cursor-pointer 
-//                     ${path === '/' && 'text-primary font-bold'}`} 
-//                     onClick={() => router.push('/')} // Home pe click par "/" route
-//                 >
-//                     Home
-//                 </li>
-//         </ul>
-//         <UserButton/>
-
-//     </div>
-//   )
-// }
-
-// export default Header
-
-// ----------------------------------------------------------------
-
 "use client";
 
-import Image from 'next/image'
-import { UserButton } from '@clerk/nextjs'
-import { usePathname, useRouter } from 'next/navigation'
-import React from 'react'
-import { 
-  LayoutDashboard, 
-  HelpCircle, 
-  Rocket, 
-  Home 
-} from 'lucide-react'
+import Image from "next/image";
+import Link from "next/link";
+import { UserButton } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
+import React from "react";
+import { BookOpenText, Home, LayoutDashboard, Rocket, UserRound } from "lucide-react";
+import { clerkAppearance } from "@/utils/clerkAppearance";
 
 function Header() {
-    const path = usePathname();
-    const router = useRouter();
+  const path = usePathname();
 
-    const navItems = [
-        { 
-            name: 'Dashboard', 
-            icon: LayoutDashboard, 
-            path: '/dashboard',
-            active: path === '/dashboard'
-        },
-        { 
-            name: 'Questions', 
-            icon: HelpCircle, 
-            path: '/dashboard/questions',
-            active: path === '/dashboard/questions'
-        },
-        { 
-            name: 'Upgrade', 
-            icon: Rocket, 
-            path: '/dashboard/upgrade',
-            active: path === '/dashboard/upgrade'
-        },
-        { 
-            name: 'Home', 
-            icon: Home, 
-            path: '/',
-            active: path === '/'
-        }
-    ];
+  const navItems = [
+    {
+      name: "Dashboard",
+      icon: LayoutDashboard,
+      path: "/dashboard",
+      active: path === "/dashboard",
+    },
+    {
+      name: "Questions",
+      icon: BookOpenText,
+      path: "/dashboard/questions",
+      active: path === "/dashboard/questions",
+    },
+    {
+      name: "Profile",
+      icon: UserRound,
+      path: "/dashboard/profile",
+      active: path === "/dashboard/profile",
+    },
+    {
+      name: "AI Lab",
+      icon: Rocket,
+      path: "/dashboard/upgrade",
+      active: path === "/dashboard/upgrade",
+    },
+    {
+      name: "Home",
+      icon: Home,
+      path: "/",
+      active: path === "/",
+    },
+  ];
 
-    return (
-        <header className="fixed top-0 left-0 right-0 z-50">
-            {/* Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-blue-950/30 to-black/50 backdrop-blur-xl opacity-90"></div>
-            
-            {/* Border Gradient */}
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 
-                bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
+  return (
+    <>
+      <aside className="fixed bottom-0 left-0 top-0 z-50 hidden w-72 border-r border-white/10 bg-slate-950/70 p-5 shadow-2xl shadow-cyan-950/20 backdrop-blur-xl md:flex md:flex-col">
+        <Link href="/" className="group flex items-center gap-3 text-left">
+          <Image
+            src="/logo.svg"
+            width={46}
+            height={46}
+            alt="AI Mock Interview"
+            className="transition-transform group-hover:scale-105"
+          />
+          <div>
+            <p className="text-sm font-bold text-white">MockMate AI</p>
+            <p className="text-xs text-slate-400">Interview command center</p>
+          </div>
+        </Link>
 
-            <div className='relative z-50 flex p-4 items-center justify-between container mx-auto'>
-                {/* Logo with Hover Effect */}
-                <div 
-                    className="flex items-center space-x-3 cursor-pointer group"
-                    onClick={() => router.push('/')}
-                >
-                    <Image 
-                        src='/logo.svg' 
-                        width={50} 
-                        height={50} 
-                        alt='Logo' 
-                        className="transition-transform group-hover:rotate-6 group-hover:scale-110"
-                    />
-                </div>
+        <nav className="mt-8 space-y-2">
+          {navItems.map((item) => (
+            <Link
+              href={item.path}
+              key={item.name}
+              className={`flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm transition-all ${
+                item.active
+                  ? "border border-cyan-400/30 bg-cyan-400/10 text-cyan-100 shadow-lg shadow-cyan-950/20"
+                  : "text-slate-300 hover:bg-white/10 hover:text-white"
+              }`}
+            >
+              <item.icon className={item.active ? "text-cyan-300" : "text-slate-400"} size={18} />
+              {item.name}
+            </Link>
+          ))}
+        </nav>
 
-                {/* Navigation */}
-                <nav className='hidden md:flex space-x-6'>
-                    {navItems.map((item) => (
-                        <div 
-                            key={item.name}
-                            className={`flex items-center space-x-2 
-                                cursor-pointer 
-                                group 
-                                transition-all 
-                                duration-300 
-                                ${item.active 
-                                    ? 'text-white' 
-                                    : 'text-gray-200 hover:text-white'}`}
-                            onClick={() => router.push(item.path)}
-                        >
-                            <item.icon 
-                                className={`
-                                    ${item.active 
-                                        ? 'text-blue-500' 
-                                        : 'text-gray-300 group-hover:text-blue-500'}
-                                    transition-colors duration-300
-                                `} 
-                                size={20} 
-                            />
-                            <span className={`
-                                text-sm font-light
-                                ${item.active 
-                                    ? 'bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-blue-500' 
-                                    : ''}
-                                group-hover:bg-clip-text group-hover:text-transparent 
-                                group-hover:bg-gradient-to-r 
-                                group-hover:from-cyan-300 
-                                group-hover:to-blue-500
-                                transition-all duration-300
-                            `}>
-                                {item.name}
-                            </span>
-                        </div>
-                    ))}
-                </nav>
+        <div className="mt-auto rounded-xl border border-white/10 bg-white/5 p-4">
+          <p className="text-xs uppercase tracking-wide text-slate-500">Next step</p>
+          <p className="mt-1 text-sm text-slate-200">Keep your profile updated for better suggested interviews.</p>
+        </div>
 
-                {/* User Profile */}
-                <div className="flex items-center space-x-4">
-                    <div className="relative z-[99999]">
-                    <UserButton 
-                        afterSignOutUrl="/"
-                        appearance={{
-                        elements: {
-                            userButtonAvatarBox: 'w-12 h-12 hover:ring-blue-500 transition-all',
-                            userButtonPopoverCard: 'z-[99999] bg-slate-900 border-white/10 shadow-2xl',
-                        }
-                        }}
-                    />
-                    </div>
+        <div className="mt-4 flex items-center justify-between rounded-xl border border-white/10 bg-black/20 p-3">
+          <span className="text-sm text-slate-300">Account</span>
+          <UserButton afterSignOutUrl="/" appearance={clerkAppearance} />
+        </div>
+      </aside>
 
-                </div>
-            </div>
-        </header>
-    )
+      <header className="fixed left-0 right-0 top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl md:hidden">
+        <div className="flex items-center justify-between px-4 py-3">
+          <Link href="/" className="flex items-center gap-2">
+            <Image src="/logo.svg" width={38} height={38} alt="AI Mock Interview" />
+            <span className="text-sm font-bold text-white">MockMate AI</span>
+          </Link>
+          <UserButton afterSignOutUrl="/" appearance={clerkAppearance} />
+        </div>
+        <nav className="flex gap-2 overflow-x-auto px-4 pb-3">
+          {navItems.map((item) => (
+            <Link
+              href={item.path}
+              key={item.name}
+              className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2 text-xs ${
+                item.active ? "bg-cyan-400/10 text-cyan-100" : "bg-white/5 text-slate-300"
+              }`}
+            >
+              <item.icon size={14} />
+              {item.name}
+            </Link>
+          ))}
+        </nav>
+      </header>
+    </>
+  );
 }
 
-export default Header
+export default Header;

@@ -1,140 +1,130 @@
-// import { Lightbulb, Volume1, Volume2 } from 'lucide-react';
-// import React, { useState } from 'react'
+"use client";
 
-// function QuestionsSection({mockInterviewQues, activeQuestionIndex}) {
-//     console.log("miq: " ,mockInterviewQues);
-//     const [isSpeaking, setIsSpeaking] = useState(false);
-//     const textToSpeech = (text) => {
-//         if('speechSynthesis' in window){
-//             const msg = new SpeechSynthesisUtterance(text);
-//             msg.onstart = () => setIsSpeaking(true);  
-//             msg.onend = () => setIsSpeaking(false);   
-//             window.speechSynthesis.speak(msg);
-//         }
-//         else{
-//             alert('Sorry! Your browser does not support text-to-speech');
-//         }
-//     }
-//   return mockInterviewQues && (
-//     <div className='p-5 border border-pink-200 rounded-lg mt-10 shadow-lg'>
-//         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
-//             {mockInterviewQues && mockInterviewQues.map((question, index)=>(
-//                 <h2 key={index} className=
-//                 {`p-2 bg-white shadow-lg rounded-full font-semibold text-sm text-center cursor-pointer 
-//                 ${activeQuestionIndex===index && 'text-pink-500 text-lg'}`}>
-//                     Question # {index+1}</h2>
-//             ))}
-//         </div>
-//         <h2 className='mt-10 text-lg text-pink-500 font-semibold'>Q. {mockInterviewQues[activeQuestionIndex]?.ques}</h2>
-//         <div className='mt-2 cursor-pointer' onClick={() => textToSpeech(mockInterviewQues[activeQuestionIndex]?.ques)}>
-//                 {isSpeaking ? <Volume2 className="animate-pulse text-pink-500" /> : <Volume2 className='text-pink-500' />}
-//         </div>
-//         <div className='border rounded-lg p-4 bg-yellow-100 border-yellow-300 mt-10'>
-//             <h2 className='flex gap-2 items-center text-yellow-600'>
-//                 <Lightbulb/>
-//                 <strong>READ: </strong>
-//             </h2>
-//             <h2 className='mt-3 text-yellow-600 text-xs md:text-sm'>It is recommended to enable video webcam and microphone to start your AI generated mock interview. It has 10 questions which you can answer and at last you will get the report on the basis of your answer.</h2>
-//                 <h2 className='mt-3 text-yellow-600 text-xs md:text-sm'><strong>NOTE:</strong> We never record your video or save any private stuff. You can disable the access of webcam anytime, if you want. <strong>Give a buffer time of 2 seconds before and after clicking on the Record Box.</strong>
-//             </h2>
-//         </div>
+import { CheckCircle2, Lightbulb, ListChecks, Volume2 } from "lucide-react";
+import React, { useState } from "react";
 
-//     </div>
-//   )
-// }
+function QuestionsSection({ mockInterviewQues, activeQuestionIndex, onQuestionChange }) {
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const activeQuestion = mockInterviewQues?.[activeQuestionIndex];
+  const questionCount = mockInterviewQues?.length || 0;
+  const progress = questionCount ? Math.round(((activeQuestionIndex + 1) / questionCount) * 100) : 0;
 
-// export default QuestionsSection
+  const textToSpeech = (text) => {
+    if (!text) return;
 
-// ----------------------------------------------------------------
-
-import { Lightbulb, Volume2 } from 'lucide-react';
-import React, { useState } from 'react'
-
-function QuestionsSection({mockInterviewQues, activeQuestionIndex, onQuestionChange}) {
-    const [isSpeaking, setIsSpeaking] = useState(false);
-    const textToSpeech = (text) => {
-        if('speechSynthesis' in window){
-            const msg = new SpeechSynthesisUtterance(text);
-            msg.onstart = () => setIsSpeaking(true);  
-            msg.onend = () => setIsSpeaking(false);   
-            window.speechSynthesis.speak(msg);
-        }
-        else{
-            alert('Sorry! Your browser does not support text-to-speech');
-        }
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+      const msg = new SpeechSynthesisUtterance(text);
+      msg.onstart = () => setIsSpeaking(true);
+      msg.onend = () => setIsSpeaking(false);
+      window.speechSynthesis.speak(msg);
+      return;
     }
 
-    const handleQuestionChange = (index) => {
-        if (onQuestionChange) {
-            onQuestionChange(index);
-        }
-    }
+    alert("Your browser does not support text-to-speech");
+  };
 
-  return mockInterviewQues && (
-    <div className='mt-10 bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 space-y-6'>
-        <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-            {mockInterviewQues && mockInterviewQues.map((question, index)=>(
-                <button 
-                    key={index} 
-                    onClick={() => handleQuestionChange(index)}
-                    className={`
-                        p-2 
-                        rounded-xl 
-                        text-center 
-                        cursor-pointer 
-                        transition-all 
-                        duration-300 
-                        focus:outline-none
-                        ${activeQuestionIndex === index 
-                            ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white' 
-                            : 'bg-white/10 text-gray-300 hover:bg-white/20'}
-                    `}
-                >
-                    <span className='text-sm font-light'>
-                        Question #{index+1}
-                    </span>
-                </button>
-            ))}
+  if (!mockInterviewQues?.length) {
+    return (
+      <div className="rounded-xl border border-white/10 bg-white/5 p-6 text-gray-300">
+        No questions found for this interview.
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6 rounded-xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl md:p-6">
+      <div className="flex flex-col gap-3 border-b border-white/10 pb-5 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="text-xs uppercase tracking-wide text-slate-500">Active prompt</p>
+          <h2 className="mt-1 text-lg font-bold text-white">
+            Question {activeQuestionIndex + 1} of {questionCount}
+          </h2>
         </div>
+        <div className="min-w-36">
+          <div className="mb-2 flex items-center justify-between text-xs text-slate-400">
+            <span>Round progress</span>
+            <span>{progress}%</span>
+          </div>
+          <div className="h-2 overflow-hidden rounded-full bg-white/10">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 transition-all"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
+      </div>
 
-        <div className='space-y-4'>
-            <h2 className='text-xl font-bold 
-                bg-clip-text text-transparent 
-                bg-gradient-to-r from-cyan-300 to-blue-500'>
-                Q. {mockInterviewQues[activeQuestionIndex]?.ques}
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+        {mockInterviewQues.map((question, index) => (
+          <button
+            type="button"
+            key={question.id || index}
+            onClick={() => onQuestionChange?.(index)}
+            className={`flex items-center justify-center gap-2 rounded-lg p-2 text-center text-sm transition-all ${
+              activeQuestionIndex === index
+                ? "bg-gradient-to-r from-cyan-500 to-blue-500 text-white"
+                : "bg-white/10 text-gray-300 hover:bg-white/20"
+            }`}
+          >
+            {index < activeQuestionIndex && <CheckCircle2 size={14} />}
+            Q{index + 1}
+          </button>
+        ))}
+      </div>
+
+      <div className="space-y-4">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="mb-2 text-xs uppercase tracking-wide text-gray-500">
+              {activeQuestion?.category || "interview"} · {activeQuestion?.difficulty || "adaptive"}
+            </p>
+            <h2 className="text-xl font-bold leading-relaxed text-white">
+              Q. {activeQuestion?.ques}
             </h2>
-            
-            <div 
-                className='inline-block cursor-pointer 
-                bg-white/10 p-2 rounded-full 
-                hover:bg-white/20 transition-all'
-                onClick={() => textToSpeech(mockInterviewQues[activeQuestionIndex]?.ques)}
-            >
-                {isSpeaking ? 
-                    <Volume2 className="animate-pulse text-blue-400" /> : 
-                    <Volume2 className='text-blue-400' />
-                }
-            </div>
+          </div>
+          <button
+            type="button"
+            className="rounded-full bg-white/10 p-2 transition-all hover:bg-white/20"
+            onClick={() => textToSpeech(activeQuestion?.ques)}
+          >
+            <Volume2 className={isSpeaking ? "animate-pulse text-blue-400" : "text-blue-400"} />
+          </button>
         </div>
 
-        <div className='bg-yellow-500/10 border border-yellow-500/30 rounded-2xl p-6'>
-            <div className='flex items-center space-x-3 mb-4'>
-                <Lightbulb className='text-yellow-500' />
-                <h2 className='text-xl font-bold text-yellow-500'>
-                    Important Information
-                </h2>
+        {activeQuestion?.rubric?.length > 0 && (
+          <div className="rounded-lg border border-white/10 bg-black/20 p-4">
+            <div className="mb-3 flex items-center gap-2 text-sm font-bold text-gray-200">
+              <ListChecks size={16} className="text-cyan-300" />
+              What this tests
             </div>
-            <p className='text-sm mb-3 text-yellow-300'>
-                Enable your webcam and microphone for the AI-powered mock interview. 
-                This session includes 10 questions to help assess and improve your interview skills.
-            </p>
-            <p className='text-xs text-yellow-600'>
-                <strong>Note:</strong> Your privacy is our priority. We do not record or store any personal data. 
-                Give a buffer time of 2 seconds before and after clicking on the Record Box.
-            </p>
+            <div className="space-y-2">
+              {activeQuestion.rubric.map((item, index) => (
+                <div
+                  key={`${item.criterion}-${index}`}
+                  className="flex justify-between gap-4 text-sm text-gray-300"
+                >
+                  <span>{item.criterion}</span>
+                  <span className="text-cyan-300">{item.weight}%</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-5">
+        <div className="mb-3 flex items-center gap-3">
+          <Lightbulb className="text-yellow-400" />
+          <h2 className="text-lg font-bold text-yellow-300">Interview Tip</h2>
         </div>
+        <p className="text-sm text-yellow-100">
+          Use a structured answer: situation, decision, tradeoffs, result. Add one concrete project example
+          when possible.
+        </p>
+      </div>
     </div>
-  )
+  );
 }
 
-export default QuestionsSection
+export default QuestionsSection;

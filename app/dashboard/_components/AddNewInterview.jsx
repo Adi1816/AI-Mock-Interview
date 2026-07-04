@@ -1,382 +1,344 @@
-// "use client"
-// import React, { useState } from 'react'
-// import { v4 as uuidv4 } from 'uuid';
-// import {
-//     Dialog,
-//     DialogContent,
-//     DialogDescription,
-//     DialogHeader,
-//     DialogTitle,
-//     DialogTrigger,
-//   } from "@/components/ui/dialog"
-// import { Button } from '@/components/ui/button';
-// import { Input } from '@/components/ui/input';
-// import { Textarea } from '@/components/ui/textarea';
-// import { chatSession } from '@/utils/GeminiAiModel';
-// import { LoaderCircle } from 'lucide-react';
-// import { db } from '@/utils/db';
-// import { MockInterview } from '@/utils/schema';
-// import { useUser } from '@clerk/nextjs';
-// import moment from 'moment';
-// import { useRouter } from 'next/navigation';
-  
+"use client";
 
-// function AddNewInterview() {
-//   const [openDialog, setOpenDialog]=useState(false);
-//   const [jobTitle, setJobTitle]=useState();
-//   const [jobDescription, setJobDescription]=useState();
-//   const [techStacks, setTechStacks]=useState();
-//   const [duration, setDuration]=useState();
-//   const [loading, setLoading]=useState(false);
-//   const router=useRouter();
-//   const [jsonResponse, setJsonResponse]=useState([]);
-//   const {user}=useUser();
+import ResumeUpload from "@/components/interview/ResumeUpload";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { saveLocalInterview } from "@/utils/client/localInterviews";
+import { readLocalProfile } from "@/utils/client/localProfile";
+import { useUser } from "@clerk/nextjs";
+import { ArrowRight, CheckCircle2, ChevronDown, LoaderCircle, PlusCircle, Zap } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 
-//   const onSubmit = async (event) => {
-//     setLoading(true);
-//     event.preventDefault();
-//     console.log(jobTitle, jobDescription, techStacks, duration);
+const baseForm = {
+  jobTitle: "",
+  techStacks: "",
+  duration: "1",
+  interviewType: "technical",
+  difficulty: "mid",
+  targetCompany: "",
+  resumeText: "",
+  questionCount: 8,
+};
 
-//     const inputPrompt = `
-//     Job Title: ${jobTitle}, Job Description: ${jobDescription}, Tech Stacks: ${techStacks}, Years of Experience: ${duration}.
-//     Based on this job, generate ${process.env.NEXT_PUBLIC_INTERVIEW_QUES_COUNT} interview questions along with answers in **valid JSON format**.
+function buildInitialForm(preset) {
+  return {
+    ...baseForm,
+    jobTitle: preset?.jobTitle || "",
+    jobDescription: preset?.jobDescription || "",
+    techStacks: preset?.techStacks || "",
+    interviewType: preset?.type || "technical",
+    difficulty: preset?.difficulty || "mid",
+    questionCount: preset?.questionCount || 8,
+  };
+}
 
-//     Strictly follow these JSON rules:
-//     1. **Do not include any markdown formatting** (like \`\`\`json or \`\`\`).
-//     2. Ensure that all answers are **single-line or properly escaped**.
-//     3. Do **not** use line breaks (\\n) or extra spaces inside the JSON values.
-//     4. Provide output as a **valid JSON object**, where each question has "ques" and "ans" fields.
-//     `;
+function errorFromPayload(payload, fallback) {
+  const fieldErrors = payload?.details?.fieldErrors || {};
+  const firstFieldError = Object.entries(fieldErrors)
+    .flatMap(([field, messages]) => (messages || []).map((message) => `${field}: ${message}`))
+    .at(0);
 
-//     try {
-//         const result = await chatSession.sendMessage(inputPrompt);
-//         const rawResponse = await result.response.text(); 
-//         console.log("Raw Response:", rawResponse);
+  return firstFieldError || payload?.error || fallback;
+}
 
-//         const jsonMatch = rawResponse.match(/```json([\s\S]*?)```/);
-//         if (!jsonMatch) throw new Error("Response does not contain JSON");
+function AddNewInterview({ onCreated, preset, compact = false, triggerLabel, triggerDescription }) {
+  const [openDialog, setOpenDialog] = useState(false);
+  const [form, setForm] = useState(() => buildInitialForm(preset));
+  const [resumeFileName, setResumeFileName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [profileLoaded, setProfileLoaded] = useState(false);
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
 
-//         const mockJsonResponse = jsonMatch[1].trim();
-//         setJsonResponse(mockJsonResponse);
+  const TriggerIcon = preset?.icon || PlusCircle;
+  const isPresetFlow = Boolean(preset);
 
-//         if(mockJsonResponse){
-//             const resp=await db.insert(MockInterview)
-//             .values({
-//                 mockId:uuidv4(),
-//                 jsonMockResp:mockJsonResponse,
-//                 jobPosition:jobTitle,
-//                 jobDescription:jobDescription,
-//                 techStacks:techStacks,
-//                 jobExperience:duration,
-//                 createdBy:user?.primaryEmailAddress?.emailAddress,
-//                 createdAt:moment().format('DD-MM-YYYY')
-//             }).returning({mockId:MockInterview.mockId});
+  const dialogTitle = useMemo(() => {
+    if (preset) {
+      return `${preset.title} Interview`;
+    }
 
-//             console.log("Inserted ID:", resp);
-//             if(resp){
-//                 setOpenDialog(false);
-//                 router.push('/dashboard/interview/'+resp[0]?.mockId);
-//             }
-//         }
-//         else{
-//             console.log("ERROR: Response does not contain JSON");
-//         }
-//         const parsedResponse = JSON.parse(mockJsonResponse);
-        
-//         console.log("Parsed JSON:", parsedResponse);
-//     } catch (error) {
-//         console.error("JSON Parsing Error:", error);
-//     } finally {
-//         setLoading(false);
-//     }
-// };
+    return "Design Your AI Interview";
+  }, [preset]);
 
-//   return (
-//     <div className=''>
-//         <div className='p-10 border border-pink-100 shadow-md rounded-xl bg-pink-50 hover:scale-105 hover:shadow-pink-300 hover:shadow-md  cursor-pointer transition-all' onClick={()=>setOpenDialog(true)}>
-//             <h2 className='font-semibold text-xl text-center text-[#4B164C]'>+ Add New Interview</h2>
-//         </div>
-
-//         <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-//     <DialogContent className='max-w-2xl'>
-//         <DialogHeader>
-//             <DialogTitle className='font-bold text-2xl'>
-//                 Tell us more about the Job you want to get Interviewed.
-//             </DialogTitle>
-//             <DialogDescription>
-//                 <form onSubmit={onSubmit}>
-//                     <div>
-//                         <h2>Add Details of your Dream Job.</h2>
-//                         <div>
-//                             <label className='block text-sm font-semibold text-[#4B164C] pt-4 '>Job Title:</label>
-//                             <Input placeholder="Ex: Full Stack Developer, Backend Developer etc." required
-//                             onChange={(event)=>setJobTitle(event.target.value)}/>
-//                         </div>
-//                         <div>
-//                             <label className='block text-sm font-semibold text-[#4B164C] pt-4 '>Job Description:</label>
-//                             <Textarea placeholder="Ex: SDE Role, Frontend Dev Role etc." required
-//                             onChange={(event)=>setJobDescription(event.target.value)}/>
-//                         </div>
-//                         <div>
-//                             <label className='block text-sm font-semibold text-[#4B164C] pt-4 '>Tech Stacks:</label>
-//                             <Input placeholder="Ex: DSA, React, Angular, JavaScript etc." required
-//                             onChange={(event)=>setTechStacks(event.target.value)}/>
-//                         </div>
-//                         <div>
-//                             <label className='block text-sm font-semibold text-[#4B164C] pt-4 '>Years of Experience:</label>
-//                             <Input placeholder="Ex: 0-50" type="number" max="50" required
-//                             onChange={(event)=>setDuration(event.target.value)}/>
-//                         </div>
-//                     </div>
-                    
-//                     <div className='flex gap-6 pt-3 justify-end'>
-//                         <Button type="button" variant="ghost" onClick={()=>setOpenDialog(false)} className='font-bold'>Cancel</Button>
-//                         <Button type="submit" disabled={loading} className='font-bold'>
-//                             {loading ? <><LoaderCircle className='animate-spin'/>Generating from AI</> : <>Start Interview</>}
-//                         </Button>
-//                     </div>
-//                 </form>
-//             </DialogDescription>
-//         </DialogHeader>
-//     </DialogContent>
-// </Dialog>
-
-//     </div>
-//   )
-// }
-
-// export default AddNewInterview
-
-// ----------------------------------------------------------------
-"use client"
-import React, { useState } from 'react'
-import { v4 as uuidv4 } from 'uuid';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,  // Keep this if you were using it
-} from "@/components/ui/dialog"
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { chatSession } from '@/utils/GeminiAiModel';
-import { LoaderCircle } from 'lucide-react';
-import { db } from '@/utils/db';
-import { MockInterview } from '@/utils/schema';
-import { useUser } from '@clerk/nextjs';
-import moment from 'moment';
-import { useRouter } from 'next/navigation';
-
-// Newly added imports
-import { Zap, PlusCircle } from 'lucide-react';
-
-function AddNewInterview() {
-    const [openDialog, setOpenDialog]=useState(false);
-    const [jobTitle, setJobTitle]=useState();
-    const [jobDescription, setJobDescription]=useState();
-    const [techStacks, setTechStacks]=useState();
-    const [duration, setDuration]=useState();
-    const [loading, setLoading]=useState(false);
-    const router=useRouter();
-    const [jsonResponse, setJsonResponse]=useState([]);
-    const {user}=useUser();
-  
-    const onSubmit = async (event) => {
-      setLoading(true);
-      event.preventDefault();
-      console.log(jobTitle, jobDescription, techStacks, duration);
-  
-      const inputPrompt = `
-      Job Title: ${jobTitle}, Job Description: ${jobDescription}, Tech Stacks: ${techStacks}, Years of Experience: ${duration}.
-      Based on this job, generate ${process.env.NEXT_PUBLIC_INTERVIEW_QUES_COUNT} interview questions along with answers in **valid JSON format**.
-  
-      Strictly follow these JSON rules:
-      1. **Do not include any markdown formatting** (like \`\`\`json or \`\`\`).
-      2. Ensure that all answers are **single-line or properly escaped**.
-      3. Do **not** use line breaks (\\n) or extra spaces inside the JSON values.
-      4. Provide output as a **valid JSON object**, where each question has "ques" and "ans" fields.
-      `;
-  
-      try {
-          const result = await chatSession.sendMessage(inputPrompt);
-          const rawResponse = await result.response.text(); 
-          console.log("Raw Response:", rawResponse);
-  
-          const jsonMatch = rawResponse.match(/```json([\s\S]*?)```/);
-          if (!jsonMatch) throw new Error("Response does not contain JSON");
-  
-          const mockJsonResponse = jsonMatch[1].trim();
-          setJsonResponse(mockJsonResponse);
-  
-          if(mockJsonResponse){
-              const resp=await db.insert(MockInterview)
-              .values({
-                  mockId:uuidv4(),
-                  jsonMockResp:mockJsonResponse,
-                  jobPosition:jobTitle,
-                  jobDescription:jobDescription,
-                  techStacks:techStacks,
-                  jobExperience:duration,
-                  createdBy:user?.primaryEmailAddress?.emailAddress,
-                  createdAt:moment().format('DD-MM-YYYY')
-              }).returning({mockId:MockInterview.mockId});
-  
-              console.log("Inserted ID:", resp);
-              if(resp){
-                  setOpenDialog(false);
-                  router.push('/dashboard/interview/'+resp[0]?.mockId);
-              }
-          }
-          else{
-              console.log("ERROR: Response does not contain JSON");
-          }
-          const parsedResponse = JSON.parse(mockJsonResponse);
-          
-          console.log("Parsed JSON:", parsedResponse);
-      } catch (error) {
-          console.error("JSON Parsing Error:", error);
-      } finally {
-          setLoading(false);
+  useEffect(() => {
+    async function loadProfileContext() {
+      if (!openDialog || profileLoaded) {
+        return;
       }
+
+      let profile = null;
+
+      try {
+        const response = await fetch("/api/profile", {
+          cache: "no-store",
+        });
+        const payload = await response.json();
+
+        if (response.ok && payload.profile) {
+          profile = payload.profile;
+        } else if (response.ok && payload.databaseConfigured === false) {
+          profile = readLocalProfile(user?.id);
+        }
+      } catch {
+        profile = readLocalProfile(user?.id);
+      }
+
+      if (profile) {
+        setForm((current) => ({
+          ...current,
+          techStacks: current.techStacks || profile.skills || "",
+          resumeText: current.resumeText || profile.resumeText || "",
+        }));
+        setResumeFileName((current) => current || profile.resumeFileName || "");
+      }
+
+      setProfileLoaded(true);
+    }
+
+    if (isLoaded) {
+      loadProfileContext();
+    }
+  }, [isLoaded, openDialog, profileLoaded, user?.id]);
+
+  const openCreateDialog = () => {
+    setForm(buildInitialForm(preset));
+    setResumeFileName("");
+    setProfileLoaded(false);
+    setOpenDialog(true);
+  };
+
+  const updateField = (field, value) => {
+    setForm((current) => ({
+      ...current,
+      [field]: value,
+    }));
+  };
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/interviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+      const payload = await response.json();
+
+      if (!response.ok) {
+        throw new Error(errorFromPayload(payload, "Failed to create interview"));
+      }
+
+      const interview = payload.demo ? saveLocalInterview(payload.interview, user?.id) : payload.interview;
+
+      toast.success(payload.demo ? "Interview generated in local demo mode" : "AI interview generated");
+      setOpenDialog(false);
+      setForm(buildInitialForm(preset));
+      setResumeFileName("");
+      onCreated?.(interview);
+      router.push(`/dashboard/interview/${interview.mockId}`);
+    } catch (error) {
+      const message = error.message?.includes("DATABASE_URL")
+        ? "Connect DATABASE_URL in .env.local before generating saved interviews."
+        : error.message;
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div>
-      {/* Create Interview Trigger */}
-      <div 
-        className='p-8 border-2 border-transparent 
-        bg-white/4 backdrop-blur-xl 
-        rounded-2xl 
-        hover:border-blue-500/50 
-        cursor-pointer 
-        transition-all duration-300 
-        transform hover:scale-105 
-        hover:shadow-2xl 
-        flex flex-col items-center justify-center'
-        onClick={() => setOpenDialog(true)}
+      <button
+        type="button"
+        className={
+          isPresetFlow
+            ? "group flex h-full w-full cursor-pointer flex-col rounded-xl border border-white/10 bg-white/5 p-6 text-left transition-all hover:-translate-y-0.5 hover:border-cyan-400/50 hover:bg-cyan-400/10"
+            : "flex w-full cursor-pointer flex-col items-center justify-center rounded-xl border border-white/10 bg-white/5 p-8 text-left transition-all duration-300 hover:border-blue-500/50 hover:bg-white/10"
+        }
+        onClick={openCreateDialog}
       >
-        <PlusCircle 
-          className="text-blue-400 mb-4 
-          group-hover:text-white 
-          group-hover:animate-pulse 
-          transition-colors duration-300" 
-          size={40} 
+        <TriggerIcon
+          className={isPresetFlow ? "mb-4 text-cyan-300" : "mb-4 text-blue-400"}
+          size={isPresetFlow ? 30 : 40}
         />
-        <h2 className='font-bold text-xl text-center 
-          bg-clip-text text-transparent 
-          bg-gradient-to-r from-cyan-200 to-blue-400 
-          group-hover:text-white'>
-          The AI Magic!
-        </h2>
-        <h5 className='font-light text-sm text-center 
-          bg-clip-text text-transparent 
-          bg-gradient-to-r from-cyan-200 to-blue-400 
-          group-hover:text-white'>(Click here)</h5>
-      </div>
+        <span
+          className={
+            isPresetFlow
+              ? "text-xl font-bold text-gray-100"
+              : "bg-gradient-to-r from-cyan-200 to-blue-400 bg-clip-text text-center text-xl font-bold text-transparent"
+          }
+        >
+          {triggerLabel || preset?.title || "Create AI Interview"}
+        </span>
+        <span className="mt-2 text-sm text-gray-300">
+          {triggerDescription || preset?.description || "Role, resume, rubric, and difficulty aware"}
+        </span>
+        {isPresetFlow && (
+          <span className="mt-5 inline-flex items-center gap-2 rounded-lg border border-cyan-400/30 bg-cyan-400/10 px-3 py-2 text-sm font-semibold text-cyan-100 transition group-hover:bg-cyan-400/20">
+            Start interview on this topic
+            <ArrowRight size={15} />
+          </span>
+        )}
+      </button>
 
-      {/* Dialog Content */}
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogContent className='max-w-2xl bg-slate-900/80 backdrop-blur-xl border-white/10'>
+        <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto border-white/10 bg-slate-900/95 text-white backdrop-blur-xl">
           <DialogHeader>
-            <DialogTitle className='text-2xl font-bold text-white flex items-center space-x-3'>
+            <DialogTitle className="flex items-center gap-3 text-2xl font-bold text-white">
               <Zap className="text-blue-400" size={28} />
-              <span>Design Your AI Interview Experience</span>
+              {dialogTitle}
             </DialogTitle>
-            <DialogDescription className='text-gray-400 mt-2'>
-              Craft a personalized interview simulation tailored to your career goals.
+            <DialogDescription className="text-gray-400">
+              {compact
+                ? "This segment is preconfigured. Choose experience and add a resume only if you want extra personalization."
+                : "Generate a role-specific interview with rubric-based scoring and personalized context."}
             </DialogDescription>
           </DialogHeader>
 
-          <form onSubmit={onSubmit} className='space-y-6 pt-4'>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-              {/* Job Title */}
-              <div>
-                <label className='block text-sm font-semibold text-white mb-2'>
-                  Job Title
-                </label>
-                <Input 
-                  placeholder="Ex: Full Stack Developer" 
-                  required
-                  className='bg-white/10 border-white/20 text-white 
-                  focus:ring-2 focus:ring-blue-500'
-                  onChange={(event) => setJobTitle(event.target.value)}
-                />
+          <form onSubmit={onSubmit} className="space-y-5 pt-4">
+            {isPresetFlow && (
+              <div className="rounded-xl border border-cyan-500/30 bg-cyan-500/10 p-4">
+                <div className="mb-2 flex items-center gap-2 text-cyan-200">
+                  <CheckCircle2 size={18} />
+                  <span className="font-semibold">{preset.title} mode selected</span>
+                </div>
+                <p className="text-sm text-gray-300">{preset.description}</p>
               </div>
+            )}
 
-              {/* Tech Stacks */}
-              <div>
-                <label className='block text-sm font-semibold text-white mb-2'>
-                  Tech Stacks
-                </label>
-                <Input 
-                  placeholder="Ex: React, Node.js, Docker" 
+            {!compact && (
+              <>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <Field label="Job Title">
+                    <Input
+                      placeholder="Full Stack Developer"
+                      required
+                      value={form.jobTitle}
+                      onChange={(event) => updateField("jobTitle", event.target.value)}
+                      className="border-white/20 bg-white/10 text-white"
+                    />
+                  </Field>
+
+                  <Field label="Tech Stack">
+                    <Input
+                      placeholder="React, Node.js, PostgreSQL"
+                      required
+                      value={form.techStacks}
+                      onChange={(event) => updateField("techStacks", event.target.value)}
+                      className="border-white/20 bg-white/10 text-white"
+                    />
+                  </Field>
+                </div>
+
+	                <Field label="Target Company">
+                  <Input
+                    placeholder="Optional"
+                    value={form.targetCompany}
+                    onChange={(event) => updateField("targetCompany", event.target.value)}
+                    className="border-white/20 bg-white/10 text-white"
+                  />
+                </Field>
+              </>
+            )}
+
+            <div className={`grid grid-cols-1 gap-4 ${compact ? "md:grid-cols-3" : "md:grid-cols-4"}`}>
+              <Field label="Experience">
+                <Input
+                  type="number"
+                  min="0"
+                  max="50"
                   required
-                  className='bg-white/10 border-white/20 text-white 
-                  focus:ring-2 focus:ring-blue-500'
-                  onChange={(event) => setTechStacks(event.target.value)}
+                  value={form.duration}
+                  onChange={(event) => updateField("duration", event.target.value)}
+                  className="border-white/20 bg-white/10 text-white"
                 />
-              </div>
+              </Field>
+
+              {!compact && (
+                <SelectField
+                  label="Mode"
+                  value={form.interviewType}
+                  onChange={(value) => updateField("interviewType", value)}
+                  options={[
+                    ["technical", "Technical"],
+                    ["behavioral", "Behavioral"],
+                    ["system-design", "System Design"],
+                    ["dsa", "DSA"],
+                    ["frontend", "Frontend"],
+                    ["backend", "Backend"],
+                    ["ml", "ML"],
+                    ["hr", "HR"],
+                  ]}
+                />
+              )}
+
+              <SelectField
+                label="Difficulty"
+                value={form.difficulty}
+                onChange={(value) => updateField("difficulty", value)}
+                options={[
+                  ["junior", "Junior"],
+                  ["mid", "Mid"],
+                  ["senior", "Senior"],
+                  ["staff", "Staff"],
+                ]}
+              />
+
+              <Field label="Questions">
+                <Input
+                  type="number"
+                  min="3"
+                  max="12"
+                  value={form.questionCount}
+                  onChange={(event) => updateField("questionCount", Number(event.target.value))}
+                  className="border-white/20 bg-white/10 text-white"
+                />
+              </Field>
             </div>
 
-            {/* Job Description */}
-            <div>
-              <label className='block text-sm font-semibold text-white mb-2'>
-                Job Description
-              </label>
-              <Textarea 
-                placeholder="Detailed job role and responsibilities" 
-                required
-                className='bg-white/10 border-white/20 text-white 
-                focus:ring-2 focus:ring-blue-500 min-h-[120px]'
-                onChange={(event) => setJobDescription(event.target.value)}
+            <Field label="Resume Upload (Optional)">
+              <ResumeUpload
+                value={form.resumeText}
+                fileName={resumeFileName}
+                onChange={({ text, fileName }) => {
+                  updateField("resumeText", text);
+                  setResumeFileName(fileName);
+                }}
               />
-            </div>
+            </Field>
 
-            {/* Experience */}
-            <div>
-              <label className='block text-sm font-semibold text-white mb-2'>
-                Years of Experience
-              </label>
-              <Input 
-                type="number" 
-                placeholder="0-50" 
-                max="50" 
-                required
-                className='bg-white/10 border-white/20 text-white 
-                focus:ring-2 focus:ring-blue-500'
-                onChange={(event) => setDuration(event.target.value)}
-              />
-            </div>
-            
-            {/* Action Buttons */}
-            <div className='flex justify-end space-x-4 pt-4'>
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => setOpenDialog(false)} 
-                className='bg-transparent border-white/20 text-white hover:bg-white/10 hover:text-white'
+            <div className="flex justify-end gap-3 pt-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setOpenDialog(false)}
+                className="border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white"
               >
                 Cancel
               </Button>
-              <Button 
-                type="submit" 
-                disabled={loading} 
-                className='bg-gradient-to-r from-cyan-500 to-blue-500 
-                text-white hover:from-cyan-600 hover:to-blue-600 
-                flex items-center space-x-2'
+              <Button
+                type="submit"
+                disabled={loading}
+                className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-600 hover:to-blue-600"
               >
                 {loading ? (
                   <>
-                    <LoaderCircle className='animate-spin mr-2'/>
-                    Generating AI Interview
+                    <LoaderCircle className="animate-spin" />
+                    Generating
                   </>
                 ) : (
                   <>
                     <Zap size={16} />
-                    <span>Start Interview</span>
+                    Start Interview
                   </>
                 )}
               </Button>
@@ -385,8 +347,37 @@ function AddNewInterview() {
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }
 
-export default AddNewInterview
+function Field({ label, children }) {
+  return (
+    <label className="block">
+      <span className="mb-2 block text-sm font-semibold text-gray-200">{label}</span>
+      {children}
+    </label>
+  );
+}
 
+function SelectField({ label, value, onChange, options }) {
+  return (
+    <Field label={label}>
+      <div className="relative">
+        <select
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          className="h-11 w-full appearance-none rounded-lg border border-white/20 bg-slate-950/90 px-4 py-2 pr-12 text-sm text-white outline-none transition hover:border-white/30 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20"
+        >
+          {options.map(([optionValue, labelText]) => (
+            <option key={optionValue} value={optionValue}>
+              {labelText}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+      </div>
+    </Field>
+  );
+}
+
+export default AddNewInterview;
